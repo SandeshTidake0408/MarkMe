@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 </head>
 
 <body>
@@ -21,9 +22,9 @@
 
             </div>
             <ul class="main_nav">
-                <li class="main_nav_item"><a href="/">Home</a></li>
-                <li class="main_nav_item"><a href="#about">About</a></li>
-                <li class="main_nav_item"><a href="">Contact Us</a></li>
+                <li class="main_nav_item"><a href="index.html">Home</a></li>
+                <li class="main_nav_item"><a href="index.html">About</a></li>
+                <li class="main_nav_item"><a href="index.html">Contact Us</a></li>
                 <li class="main_nav_item"><a>Schedule</a></li>
             </ul>
             <ul>
@@ -31,6 +32,16 @@
             </ul>
         </nav>
     </header>
+    <div class="profile_info">
+        <p>Name : <span class="user_name">Sandesh Tidake</span></p>
+        <p>User Id : <span class="mail">sandeshtidake@gmail.com</span></p>
+        <p>User : <span class="user_type">Student</span></p>
+        <p>Branch : <span class="branch">Computer</span></p>
+        <p>Div : <span class="Div">A</span></p>
+        <p>Roll No : <span class="roll_no">SECO2223A020</span></p>
+        <button onclick="SignOut">Sign Out</button>
+
+    </div>
     <main>
         <span class="container">
             <form>
@@ -56,6 +67,7 @@
             </form>
         </span>
     </main>
+    <script src="shared_feed.js"></script>
 
 </body>
 

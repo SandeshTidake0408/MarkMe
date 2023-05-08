@@ -7,13 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
     <link rel="stylesheet" href="login.css">
-    <link rel="styleSheet" href="shared.css">
     <link rel="stylesheet" href="signup.html">
+    <link rel="styleSheet" href="shared.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 
 </head>
 
 <body>
-
+    <div class="backdrop"></div>
     <header>
         <nav class="nav_bar">
             <div class="logo">
@@ -33,13 +34,12 @@
     <div class="options">
         <a href="signup_teacher.html">Teacher</a>
         <a href="signup.html">Student</a>
-        <!-- <a id="back" href="./">Back</a> -->
     </div>
 
 
     <div class="container">
 
-        <form action="" class="login-form">
+        <form onsubmit="submitHandler(event)" " class=" login-form">
             <h1>Login</h1>
             <hr style="margin: 20px 0px;">
             <div class="form-group">
@@ -50,10 +50,12 @@
                 <label for="mail">Password</label>
                 <input type="password" class="input_field" id="pass" required>
             </div>
-            <input type="submit" class="btn" value="login">
+            <button class="login-form btn" onclick="myFunction()" id="login_btn"> Login
+            </button>
         </form>
     </div>
     <script src="shared.js"></script>
+    <script src="login.js"></script>
 </body>
 
 </html>

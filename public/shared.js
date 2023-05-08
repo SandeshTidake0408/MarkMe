@@ -1,15 +1,26 @@
-var backdrop = document.querySelector(".backdrop");
-var option = document.querySelector(".options");
-var signup = document.getElementById("sign_up_button");
-const index = document.querySelectorAll(".sign_option a");
+ const backdrop = document.querySelectorAll(".backdrop");
+const options = document.querySelectorAll(".options");
+const signup = document.getElementById("sign_up_button");
 
-console.log(index);
 
 signup.addEventListener("click", function () {
-  backdrop.style.display = "block";
-  option.style.display = "flex";
+  backdrop.forEach((element) => {
+    element.style.display = "block";
+  });
+  options.forEach((element) => {
+    element.style.display = "flex";
+  });
 });
-backdrop.addEventListener("click", function () {
-  backdrop.style.display = "none";
-  option.style.display = "none";
+
+backdrop.forEach((element) => {
+  element.addEventListener("click", function () {
+    backdrop.forEach((element) => {
+      element.style.display = "none";
+    });
+    options.forEach((element) => {
+      element.style.display = "none";
+    });
+  });
 });
+
+

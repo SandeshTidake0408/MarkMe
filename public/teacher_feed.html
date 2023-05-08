@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 </head>
 
 <body>
@@ -32,6 +33,13 @@
             </ul>
         </nav>
     </header>
+    <div class="profile_info">
+        <p>Name : <span class="user_name">Sandesh Tidake</span></p>
+        <p>User Id : <span class="mail">sandeshtidake@gmail.com</span></p>
+        <p>User : <span class="user_type">Student</span></p>
+        <button onclick="SignOut()">Sign Out</button>
+
+    </div>
     <main>
 
         <span class="container">
@@ -91,6 +99,8 @@
         </span>
     </main>
     <script src="code.js"></script>
+    <script src="shared_feed.js"></script>
+    <script src="teacher_feed.js"></script>
 </body>
 
 </html>

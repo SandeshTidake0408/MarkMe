@@ -1,10 +1,15 @@
+const express = require("express");
+const router = express.Router();
+const {
+  studentRegister,
+  teacherRegister,
+  login,
+  feedData,
+} = require("../controllers/auth");
 
-const express = require('express')
-const router = express.Router()
-const { studentRegister, teacherRegister, login} = require('../controllers/auth')
+router.post("/auth/register/student", studentRegister);
+router.post("/auth/register/teacher", teacherRegister);
+router.post("/auth/login", login);
+router.get("/feed/:email", feedData);
 
-router.post('/student/register', studentRegister)
-router.post('/teacher/register', teacherRegister)
-router.get('/login', login)
-
-module.exports = router
+module.exports = router;

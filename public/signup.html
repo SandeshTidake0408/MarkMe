@@ -8,7 +8,7 @@
     <title>Sign Up Student</title>
     <link rel="stylesheet" href="signup_shared.css">
     <link rel="styleSheet" href="shared.css">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 
 </head>
 <header>
@@ -34,14 +34,14 @@
 </div>
 
 <body>
-
+    <div class="backdrop"></div>
     <main>
         <div class="heading">
             <h2>Create new account</h2>
             <p>if already exist then <a href="login.html">login</a></p>
 
         </div>
-        <form class="container" action="login.html">
+        <form class="container" onsubmit="submitHandler(event)">
             <div class="container_element">
                 <div class=" left">
                     <h2 style="text-align: center;">Personal
@@ -49,7 +49,7 @@
                     <div class="left_element">
                         <div class="label_input">
                             <label for="name">First Name:</label>
-                            <input type="text" id="name">
+                            <input type="text" id="name" value="">
                         </div>
                         <div class="label_input">
                             <label for="l_name">Last Name:</label>
@@ -62,8 +62,8 @@
                             <input type="text" id="div">
                         </div>
                         <div class="label_input">
-                            <label for="class">Class:</label>
-                            <input type="text" id="class">
+                            <label for="clas">Class:</label>
+                            <input type="text" id="clas">
                         </div>
                     </div>
                     <div class="left_element">
@@ -89,12 +89,13 @@
                 <hr>
 
             </div>
-            <button class="btn">Sign up</button>
+            <button class="btn" onclick="handelRegister()">Sign up</button>
         </form>
 
 
     </main>
     <script src="shared.js"></script>
+    <script src="sign_up_student.js"></script>
 </body>
 
 </html>
