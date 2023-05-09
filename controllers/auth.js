@@ -125,19 +125,19 @@ const feedData = async (req, res) => {
   }
 }
 
-const generateSession = async (req , res)=>{
+const generateSession = async (req, res) => {
   console.log('start of generate session')
-  const {base , key , subject} = req.body;
-  const checkBase = await Session.findOne({base})
+  const { base, key, subject } = req.body;
+  const checkBase = await Session.findOne({ base })
   if (checkBase) {
     throw new BadRequestError("Already session is present with same key");
   } else {
     const newSession = await Session.create({
-      base, key , subject , folder:[]
+      base, key, subject, folder: []
     });
     res
       .status(StatusCodes.CREATED)
-      .json({msg: `new session created with key ${key}` , newSession});
+      .json({ msg: `new session created with key ${key}`, newSession });
   }
   console.log('end of genearte session')
 }
@@ -146,18 +146,28 @@ const markData = async (req, res) => {
   console.log('start of mark data');
   const { key, subject, rollNo } = req.body;
   const base = `${subject}_${key}`;
-  
+
   const result = await Session.updateOne(
     { base },
-    { $push: { folder: rollNo  } }
+    { $push: { folder: rollNo } }
   );
-  
+
   if (result.nModified === 0) {
     return res.status(StatusCodes.BAD_REQUEST).send('Session not found or you are late');
   }
 
   res.status(StatusCodes.CREATED).send(`Marked data for session with key ${key} and subject ${subject}`);
   console.log('end of markData');
+}
+
+const deleteSession = async (req, res) => {
+  const base = req.params.base;
+  const lecture = await Session.findOneAndDelete({base : base});
+  if (!lecture) {
+    return res.status(404).json({ msg: `No session with base : ${base}` })
+  }
+  res.status(200).json({ msg:'Session found and deleted Successfully'});
+
 }
 
 module.exports = {
@@ -167,4 +177,5 @@ module.exports = {
   feedData,
   generateSession,
   markData,
+  deleteSession,
 };
