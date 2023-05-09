@@ -2,6 +2,8 @@ const User = require("../models/student");
 const { StatusCodes } = require("http-status-codes");
 const teacher = require("../models/teacher");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
+const mongoose = require('mongoose');
+const Session = require('../models/session');
 
 const studentRegister = async (req, res) => {
   const {
@@ -15,6 +17,7 @@ const studentRegister = async (req, res) => {
     password,
     confPassword,
   } = req.body;
+
   if (password != confPassword) {
     throw new BadRequestError("Password and confirm password do not match");
   } else {
@@ -120,11 +123,48 @@ const feedData = async (req, res) => {
       userEmail: user.email,
     });
   }
-};
+}
+
+const generateSession = async (req , res)=>{
+  console.log('start of generate session')
+  const {base , key , subject} = req.body;
+  const checkBase = await Session.findOne({base})
+  if (checkBase) {
+    throw new BadRequestError("Already session is present with same key");
+  } else {
+    const newSession = await Session.create({
+      base, key , subject , folder:[]
+    });
+    res
+      .status(StatusCodes.CREATED)
+      .json({msg: `new session created with key ${key}` , newSession});
+  }
+  console.log('end of genearte session')
+}
+
+const markData = async (req, res) => {
+  console.log('start of mark data');
+  const { key, subject, rollNo } = req.body;
+  const base = `${subject}_${key}`;
+  
+  const result = await Session.updateOne(
+    { base },
+    { $push: { folder: rollNo  } }
+  );
+  
+  if (result.nModified === 0) {
+    return res.status(StatusCodes.BAD_REQUEST).send('Session not found or you are late');
+  }
+
+  res.status(StatusCodes.CREATED).send(`Marked data for session with key ${key} and subject ${subject}`);
+  console.log('end of markData');
+}
 
 module.exports = {
   studentRegister,
   teacherRegister,
   login,
   feedData,
+  generateSession,
+  markData,
 };
