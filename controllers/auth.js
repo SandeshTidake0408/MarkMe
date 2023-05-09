@@ -96,8 +96,6 @@ const login = async (req, res) => {
   });
 };
 
-
-
 const feedData = async (req, res) => {
   const email = req.params.email;
   let user = await teacher.findOne({ email });
@@ -112,15 +110,17 @@ const feedData = async (req, res) => {
       userFirstName: user.firstName,
       userLastName: user.lastName,
       userRollNo: user.rollNo,
-      userClass: user.branch,
+      userBranch: user.branch,
       userDiv: user.div,
       userEmail: user.email,
+      userType: "Student",
     });
   } else {
     res.status(StatusCodes.OK).json({
       userFirstName: user.firstName,
       userLastName: user.lastName,
       userEmail: user.email,
+      userType: "Teacher",
     });
   }
 }

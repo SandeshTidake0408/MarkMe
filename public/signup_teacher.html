@@ -8,6 +8,7 @@
     <title>Sign Up Teacher</title>
     <link rel="stylesheet" href="signup_shared.css">
     <link rel="styleSheet" href="shared.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 
 </head>
 <header>
@@ -40,7 +41,7 @@
             <p>if already exist then <a href="login.html">login</a></p>
 
         </div>
-        <form class="container" action="login.html">
+        <form class="container" onsubmit="submitHandler(event)">
             <div class="container_element">
                 <div class=" left">
                     <h2 style="text-align: center;">Personal
@@ -48,14 +49,14 @@
                     <div class="left_element">
                         <div class="label_input">
                             <label for="name">First Name:</label>
-                            <input type="text" id="name">
+                            <input type="text" id="name" required>
                         </div>
 
                     </div>
                     <div class="left_element">
                         <div class="label_input">
                             <label for="l_name">Last Name:</label>
-                            <input type="text" id="l_name">
+                            <input type="text" id="l_name" required>
                         </div>
 
                     </div>
@@ -63,28 +64,29 @@
 
                         <div class="label_input">
                             <label for="m_no">Mobile No:</label>
-                            <input type="tel" id="m_no">
+                            <input type="tel" id="m_no" required>
                         </div>
                     </div>
                 </div>
                 <div class="right">
                     <h2 style="text-align: center">Login Credential</h2>
                     <label for="mail">Email:</label>
-                    <input type="mail" id="mail">
+                    <input type="mail" id="mail" required>
                     <label for="pass">Password:</label>
-                    <input type="password" id="pass">
+                    <input type="password" id="pass" required>
                     <label for="c_pass">Confirm Password:</label>
-                    <input type="password" id="c_pass">
+                    <input type="password" id="c_pass" required>
                 </div>
                 <hr>
 
             </div>
-            <button class="btn">Sign up</button>
+            <button class="btn" onclick="handelRegister()">Sign up</button>
         </form>
 
 
     </main>
     <script src="shared.js"></script>
+    <script src="sign_up_teacher.js"></script>
 </body>
 
 </html>

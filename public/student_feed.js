@@ -2,6 +2,9 @@ const url_user = new URLSearchParams(window.location.search);
 const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
+const branch = document.querySelector(".branch");
+const div = document.querySelector(".Div");
+const roll_no = document.querySelector(".roll_no");
 
 async function user_data() {
   const email = url_user.get("name");
@@ -12,6 +15,9 @@ async function user_data() {
       userName.textContent = `${userData.userFirstName} ${userData.userLastName}`;
       userMail.textContent = userData.userEmail;
       userType.textContent = userData.userType;
+      branch.textContent = userData.userBranch;
+      div.textContent = userData.userDiv;
+      roll_no.textContent = userData.userRollNo;
     })
     .catch((err) => {
       console.error(err);
@@ -19,12 +25,3 @@ async function user_data() {
 }
 
 user_data();
-
-let CODE = document.getElementById("code");
-let num = 0;
-
-function randomNum() {
-  num = Math.floor(Math.random() * 10000);
-  console.log(num);
-  CODE.innerText = num;
-}

@@ -26,15 +26,12 @@ async function myFunction() {
 
       if (localStorage.getItem("token")) {
         // console.log("Token found:", token);
+        const userName = response.data.email_id;
         if (user) {
-          const userName = response.data.email_id;
           const url = `teacher_feed.html?name=${encodeURIComponent(userName)}`;
           window.location.href = url;
         } else {
-          const userName = response.data.email_id;
-          const url = `student
-          
-          _feed.html?name=${encodeURIComponent(userName)}`;
+          const url = `student_feed.html?name=${encodeURIComponent(userName)}`;
           window.location.href = url;
         }
       }
