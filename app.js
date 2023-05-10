@@ -25,7 +25,7 @@ app.use("/api/v1", regRouter);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT ||4000 ;
 
 const start = async () => {
   try {
