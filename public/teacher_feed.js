@@ -5,7 +5,7 @@ const userType = document.querySelector(".user_type");
 
 async function user_data() {
   const email = url_user.get("name");
-  const res = await axios
+  const response = await axios
     .get(`http://localhost:8000/api/v1/feed/${email}`)
     .then((res) => {
       const userData = res.data;
@@ -16,6 +16,7 @@ async function user_data() {
     .catch((err) => {
       console.error(err);
     });
+    // console.log(response);
 }
 
 user_data();
@@ -26,5 +27,10 @@ let num = 0;
 function randomNum() {
   num = Math.floor(Math.random() * 10000);
   console.log(num);
-  CODE.innerText = num;
+  CODE.textContent = num;
+}
+
+
+async function createPost(){
+  
 }
