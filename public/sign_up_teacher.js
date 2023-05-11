@@ -17,7 +17,7 @@ async function handelRegister() {
   var Password = password.value;
   var CPassword = cpassword.value;
   const response = await axios
-    .post("http://localhost:8000/api/v1/auth/register/teacher", {
+    .post("http://localhost:4000/api/v1/auth/register/teacher", {
       firstName: fName,
       lastName: lName,
       mobileNo: MobileNo,

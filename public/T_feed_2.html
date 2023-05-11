@@ -5,9 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sheet Download</title>
-    <link rel="stylesheet" href="sheet.css">
+    <title>Download attendance</title>
+    <link rel="stylesheet" href="T_feed_2.css">
     <link rel="stylesheet" href="shared.css">
+    <link href="" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+</head>
+
 </head>
 
 <body>
@@ -27,6 +34,13 @@
             </ul>
         </nav>
     </header>
+    <div class="profile_info">
+        <p>Name : <span class="user_name">Sandesh Tidake</span></p>
+        <p>User Id : <span class="mail">sandeshtidake@gmail.com</span></p>
+        <p>User : <span class="user_type">Student</span></p>
+        <button onclick="SignOut()">Sign Out</button>
+
+    </div>
 
     <div id="main">
 
@@ -49,7 +63,8 @@
 
     </div>
 
-
+    <script src="T_feed_2.js"></script>
+    <script src="shared_feed.js"></script>
 </body>
 
 </html>

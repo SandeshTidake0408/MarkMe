@@ -13,7 +13,7 @@ async function myFunction() {
   var passwordvalue = password.value;
 
   const response = await axios
-    .post("http://localhost:8000/api/v1/auth/login", {
+    .post("http://localhost:4000/api/v1/auth/login", {
       email: mailvalue,
       password: passwordvalue,
     })

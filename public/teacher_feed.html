@@ -42,8 +42,9 @@
     </div>
     <main>
 
+        <p class="message"></p>
         <span class="container">
-            <form target="" autocomplete="on" action="sheet.html">
+            <form autocomplete="on" onsubmit="submitHandler(event)">
                 <h2>Fill the detail for taking <br> attendance</h2>
                 <div class="container_element">
                     <div class="element_child">
@@ -89,7 +90,7 @@
                     <button type="button" onclick="randomNum()">Generate Code</button>
                 </div>
                 <div class="container_element">
-                    <button type="submit" class="create_post_btn">Create Post</button>
+                    <button class="create_post_btn" onclick="createPost()">Create Post</button>
                 </div>
 
 
@@ -98,7 +99,7 @@
 
         </span>
     </main>
-    <script src="code.js"></script>
+
     <script src="shared_feed.js"></script>
     <script src="teacher_feed.js"></script>
 </body>

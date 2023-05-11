@@ -2,8 +2,8 @@ const User = require("../models/student");
 const { StatusCodes } = require("http-status-codes");
 const teacher = require("../models/teacher");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
-const mongoose = require('mongoose');
-const Session = require('../models/session');
+const mongoose = require("mongoose");
+const Session = require("../models/session");
 
 const studentRegister = async (req, res) => {
   const {
@@ -123,27 +123,30 @@ const feedData = async (req, res) => {
       userType: "Teacher",
     });
   }
-}
+};
 
 const generateSession = async (req, res) => {
-  console.log('start of generate session')
-  const { base, key, subject } = req.body;
-  const checkBase = await Session.findOne({ base })
+  console.log("start of generate session");
+  const { base, key, subject, year, branch, Div } = req.body;
+  const checkBase = await Session.findOne({ base });
   if (checkBase) {
     throw new BadRequestError("Already session is present with same key");
   } else {
     const newSession = await Session.create({
-      base, key, subject, folder: []
+      base,
+      key,
+      subject,
+      folder: [],
     });
     res
       .status(StatusCodes.CREATED)
-      .json({ msg: `new session created with key ${key}`, newSession });
+      .json({ msg: `Session Created Successfully with code ${key}`, newSession });
   }
-  console.log('end of genearte session')
-}
+  console.log("end of genearte session");
+};
 
 const markData = async (req, res) => {
-  console.log('start of mark data');
+  console.log("start of mark data");
   const { key, subject, rollNo } = req.body;
   const base = `${subject}_${key}`;
 
@@ -153,22 +156,25 @@ const markData = async (req, res) => {
   );
 
   if (result.nModified === 0) {
-    return res.status(StatusCodes.BAD_REQUEST).send('Session not found or you are late');
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .send("Session not found or you are late");
   }
 
-  res.status(StatusCodes.CREATED).send(`Marked data for session with key ${key} and subject ${subject}`);
-  console.log('end of markData');
-}
+  res
+    .status(StatusCodes.CREATED)
+    .send(`Marked data for session with key ${key} and subject ${subject}`);
+  console.log("end of markData");
+};
 
 const deleteSession = async (req, res) => {
   const base = req.params.base;
-  const lecture = await Session.findOneAndDelete({base : base});
+  const lecture = await Session.findOneAndDelete({ base: base });
   if (!lecture) {
-    return res.status(404).json({ msg: `No session with base : ${base}` })
+    return res.status(404).json({ msg: `No session with base : ${base}` });
   }
-  res.status(200).json({ msg:'Session found and deleted Successfully'});
-
-}
+  res.status(200).json({ msg: "Session found and deleted Successfully" });
+};
 
 module.exports = {
   studentRegister,
