@@ -39,12 +39,13 @@
         <p>Branch : <span class="branch">Computer</span></p>
         <p>Div : <span class="Div">A</span></p>
         <p>Roll No : <span class="roll_no">SECO2223A020</span></p>
-        <button onclick="SignOut">Sign Out</button>
+        <button onclick="SignOut()">Sign Out</button>
 
     </div>
     <main>
+        <p class="message"></p>
         <span class="container">
-            <form>
+            <form id="myForm" onsubmit="submitHandler(event)">
                 <div class="element"><label for="subject">Subject : </label>
                     <select name="subject" id="subject">
                         <option value="dsa">DSA</option>
@@ -61,9 +62,9 @@
                 </div>
                 <div class="element">
                     <label for="code">Enter Code: </label>
-                    <input type="text">
+                    <input type="text" id="code">
                 </div>
-                <div class="element"><button>MarkMe</button></div>
+                <div class="element"><button id="markme">MarkMe</button></div>
             </form>
         </span>
     </main>
