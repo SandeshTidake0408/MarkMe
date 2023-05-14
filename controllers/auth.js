@@ -155,7 +155,7 @@ const generateSession = async (req, res) => {
 
 const markData = async (req, res) => {
   console.log("start of mark data");
-  const { key, subject, rollNo, email } = req.body;
+  const { key, subject, email } = req.body;
   const base = `${subject}_${key}`;
 
   const user = await User.findOne({ email });
@@ -166,14 +166,12 @@ const markData = async (req, res) => {
   if (!presentSession) {
     return res.status(StatusCodes.BAD_REQUEST).send("Attention: Session not found or it appears you may be running late. ")
   }
-  console.log(user)
-  console.log(presentSession)
   if (user.div != presentSession.div || user.branch != presentSession.branch) {
     return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Student not belong to same class" })
   }
   const result = await Session.updateOne(
     { base },
-    { $push: { folder: rollNo } }
+    { $push: { folder: {rollno:user.rollNo , firstName:user.firstName , lastName : user.lastName} } }
   );
 
   if (result.nModified === 0) {
