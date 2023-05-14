@@ -11,7 +11,27 @@ const UserSchema = new mongoose.Schema({
       },
     subject : {
         type: String,
-        require : [true , ' Please provide subject name']
+        require : [true , ' Please provide subject name'],
+        trim: true, // Add trim property to remove leading/trailing whitespace
+        uppercase: true
+    },
+    branch :{
+        type: String,
+        require : [true , ' Please provide branch'],
+        trim: true, // Add trim property to remove leading/trailing whitespace
+        uppercase: true
+    },
+    div :{
+        type: String,
+        require : [true , ' Please provide Division'],
+        trim: true, // Add trim property to remove leading/trailing whitespace
+        uppercase: true
+    },
+    year :{
+        type: String,
+        require : [true , ' Please provide Year'],
+        trim: true, // Add trim property to remove leading/trailing whitespace
+        uppercase: true
     },
     folder: []
 })

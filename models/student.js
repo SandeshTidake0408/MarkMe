@@ -20,15 +20,18 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Please division'],
     maxlength: 1,
     minlength: 1,
+    trim: true, // Add trim property to remove leading/trailing whitespace
+    uppercase: true
   },
   branch:{
     type: String,
     required: [true, 'Please select branch'],
+    trim: true, // Add trim property to remove leading/trailing whitespace
+    uppercase: true
   },
   rollNo:{
     type: String,
     require: [true,'Please Roll Number'],
-    unique:true,
   },
   mobileNo:{
     type:Number,
