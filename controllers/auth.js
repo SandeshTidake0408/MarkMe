@@ -131,7 +131,7 @@ const feedData = async (req, res) => {
 
 const generateSession = async (req, res) => {
   console.log("start of generate session");
-  const { base, key, subject, year, branch, div } = req.body;
+  const { base, key, subject, year, branch, div, lattitude, longitude, altitude } = req.body;
   const checkBase = await Session.findOne({ base });
   if (checkBase) {
     throw new BadRequestError("Already session is present with same key");
@@ -144,6 +144,7 @@ const generateSession = async (req, res) => {
       year,
       div,
       folder: [],
+      lattitude, longitude, altitude,
     });
     res.status(StatusCodes.CREATED).json({
       msg: `Session Created Successfully with code ${key}`,
@@ -155,23 +156,30 @@ const generateSession = async (req, res) => {
 
 const markData = async (req, res) => {
   console.log("start of mark data");
-  const { key, subject, email } = req.body;
-  const base = `${subject}_${key}`;
+  const { key, subject, email, studentLat, studentLon, studentAlt } = req.body;
 
-  const user = await User.findOne({ email });
-  if(!user){
-    return res.send("No user present")
-  }
-  const presentSession = await Session.findOne({base})
+  const base = `${subject}_${key}`;
+  const presentSession = await Session.findOne({ base })
   if (!presentSession) {
     return res.status(StatusCodes.BAD_REQUEST).send("Attention: Session not found or it appears you may be running late. ")
+  }
+
+  const distance = await calculateDistance(presentSession.lattitude, presentSession.altitude, studentLat, studentLon);
+  const height =abs(studentAlt-presentSession.altitude);
+
+  if ((distance > 0.035) || (height>0.004)) {
+    return res.status(StatusCodes.BAD_REQUEST).send("You are not in range!!!");
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.send("No user present")
   }
   if (user.div != presentSession.div || user.branch != presentSession.branch) {
     return res.status(StatusCodes.BAD_REQUEST).json({ msg: "Student not belong to same class" })
   }
   const result = await Session.updateOne(
     { base },
-    { $push: { folder: {rollno:user.rollNo , firstName:user.firstName , lastName : user.lastName} } }
+    { $push: { folder: { rollno: user.rollNo, firstName: user.firstName, lastName: user.lastName } } }
   );
 
   if (result.nModified === 0) {
@@ -188,18 +196,35 @@ const markData = async (req, res) => {
   console.log("end of markData");
 };
 
+// Function to calculate distance between two points using Haversine formula
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1);
+  var dLon = deg2rad(lon2 - lon1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d;
+}
+function deg2rad(deg) {
+  return deg * (Math.PI / 180)
+}
+
 const deleteSession = async (req, res) => {
   const base = req.params.base;
-  const {email}= req.body;
-  const user=await teacher.findOne({email})
-  if(!user.teacher){
+  const { email } = req.body;
+  const user = await teacher.findOne({ email })
+  if (!user.teacher) {
     return res.status(StatusCodes.UNAUTHORIZED).send("Unauthorized Action");
   }
   const lecture = await Session.findOneAndDelete({ base: base });
   if (!lecture) {
     return res.status(404).json({ msg: `No session with base : ${base}` });
   }
-  res.status(200).json({ msg: "Session found and deleted Successfully" });
+  res.status(200).json({ msg: "Session deleted Successfully" });
 };
 
 module.exports = {
