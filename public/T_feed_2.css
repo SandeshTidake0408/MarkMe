@@ -42,10 +42,10 @@ button {
   margin-top: 32px;
 }
 
-.btn #firstBtn {
+.btn #stop_btn {
   background-color: #5d3995;
   margin-right: 8.7%;
 }
-.btn #secondBtn {
+.btn #cancel_btn {
   background-color: #ff3f3f;
 }

@@ -1,14 +1,16 @@
 const url_user = new URLSearchParams(window.location.search);
+console.log("url_user",url_user.toString());
 const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
+const user = url_user.get("name");
+const id = url_user.get("id");
+console.log(user);
 
+console.log(id);
 async function user_data() {
-    const email = url_user.get("name");
-
-    console.log(email);
     const response = await axios
-        .get(`http://localhost:4000/api/v1/feed/${email}`)
+        .get(`http://localhost:4000/api/v1/feed/${user}`)
         .then((res) => {
             const userData = res.data;
             userName.textContent = `${userData.userFirstName} ${userData.userLastName}`;
@@ -21,9 +23,19 @@ async function user_data() {
 }
 
 user_data();
-
-function SignOut() {
-    localStorage.clear();
-    window.location.href = "login.html";
-    history.replaceState(null, "", "login.html");
+const Message = document.querySelector(".message");
+async function Cancel() {
+    const res = await axios
+        .post(`http://localhost:4000/api/v1/delete/${id}`, {
+            email: user,
+        })
+        .then((result) => {
+            const data = result.data;
+            Message.style.color = "#40ba55";
+            Message.textContent = data.msg;
+        })
+        .catch((err) => {
+            Message.style.color = "#ff3f3f";
+            Message.textContent = "Cancel Failed";
+        });
 }

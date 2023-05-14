@@ -65,9 +65,3 @@ markme_btn.addEventListener("click", async () => {
             console.log(error.config);
         });
 });
-
-function SignOut() {
-    localStorage.clear();
-    window.location.href = "login.html";
-    history.replaceState(null, "", "login.html");
-}

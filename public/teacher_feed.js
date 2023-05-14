@@ -40,7 +40,7 @@ const Branch = document.getElementById("branch");
 const Subject = document.getElementById("subject");
 const Div = document.getElementById("div");
 const Message = document.querySelector(".message");
-
+var id;
 async function createPost() {
     const year = Year.value;
     const branch = Branch.value;
@@ -48,10 +48,11 @@ async function createPost() {
     const div = Div.value;
     const code = num;
     console.log(num);
-
+    id = `${sub}_${code}`;
+    console.log("bhgf", id);
     const response = await axios
         .post("http://localhost:4000/api/v1/generate/session", {
-            base: `${sub}_${code}`,
+            base: id,
             key: code,
             subject: sub,
             year: year,
@@ -67,19 +68,44 @@ async function createPost() {
                 const email = url_user.get("name");
                 var url = `T_feed_2.html?name=${encodeURIComponent(
                     email
-                )}?id=${encodeURIComponent(num)}`;
+                )}&id=${encodeURIComponent(id)}`;
                 window.location.href = url;
             }, 1000);
         })
 
         .catch((err) => {
             Message.style.color = "#ff3f3f";
-            Message.textContent = "Somthing might be wrong please try again !!";
+            // Message.textContent = "Somthing might be wrong please try again !!";
+            console.log(err.response.data);
         });
 }
 
-function SignOut() {
-    localStorage.clear();
-    window.location.href = "login.html";
-    history.replaceState(null, "", "login.html");
+//// Location criteria
+
+function teacher_location() {
+    const options_obj = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+    };
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            successCallback,
+            errorCallback,
+            options_obj
+        );
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+
+    const successCallback = (position) => {
+        var T_Latitude = position.coords.latitude;
+        var T_Longitude = position.coords.longitude;
+        var T_Altitude = position.coords.altitude;
+    };
+
+    const errorCallback = (error) => {
+        console.log("Error getting student's location: " + error.message);
+    };
 }
+teacher_location();
