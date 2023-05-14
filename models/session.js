@@ -33,7 +33,19 @@ const UserSchema = new mongoose.Schema({
         trim: true, // Add trim property to remove leading/trailing whitespace
         uppercase: true
     },
-    folder: []
+    folder: [],
+    latitude:{
+        type: Schema.Types.Double,
+        require: true,
+    },
+    longitude:{
+        type: Schema.Types.Double,
+        require: true,
+    },
+    altitude:{
+        type: Schema.Types.Double,
+        require: true,
+    }
 })
 
 
