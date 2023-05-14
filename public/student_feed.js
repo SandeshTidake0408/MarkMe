@@ -7,6 +7,8 @@ const div = document.querySelector(".Div");
 const roll_no = document.querySelector(".roll_no");
 let user_roll; // for global use
 
+//profile access
+
 async function user_data() {
     const email = url_user.get("name");
     const res = await axios
@@ -28,11 +30,44 @@ async function user_data() {
 
 user_data();
 
+// to prevent default submit action of html form
 function submitHandler(event) {
-    // to prevent default submit action of html form
     event.preventDefault();
     document.getElementById("myForm").reset();
 }
+
+//Location access
+var S_Latitude;
+var S_Longitude;
+var S_Altitude;
+
+function student_location() {
+    const options_obj = {
+        enableHighAccuracy: true,
+        timeout: 2000,
+    };
+    const successCallback = (position) => {
+        S_Latitude = position.coords.latitude;
+        S_Longitude = position.coords.longitude;
+        S_Altitude = position.coords.altitude;
+        console.log(S_Longitude);
+        console.log(S_Latitude);
+    };
+    const errorCallback = (error) => {
+        console.log("Error getting student's location: " + error.message);
+    };
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            successCallback,
+            errorCallback,
+            options_obj
+        );
+    } else {
+        console.log("Geolocation is not supported by this browser.");
+    }
+}
+student_location();
 
 const sub = document.getElementById("subject");
 const code = document.getElementById("code");
@@ -48,6 +83,9 @@ markme_btn.addEventListener("click", async () => {
             key: key,
             subject: subject,
             rollNo: rollno,
+            studentLat: S_Latitude,
+            studentLon: S_Longitude,
+            studentAlt: S_Altitude,
         })
         .then((result) => {
             mess.style.color = "#40ba55";
@@ -56,7 +94,7 @@ markme_btn.addEventListener("click", async () => {
         .catch((error) => {
             if (error.response) {
                 mess.style.color = "#ff3f3f";
-                mess.textContent = error.response.data;
+                mess.textContent = error.response.data.msg;
             } else if (error.request) {
                 console.log(error.request);
             } else {

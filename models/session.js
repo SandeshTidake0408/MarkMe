@@ -1,52 +1,51 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-    base:{
-        type:String,
-        require:[true , 'please provide base value as subject_key']
+    base: {
+        type: String,
+        require: [true, "please provide base value as subject_key"],
     },
     key: {
         type: Number,
-        required: [true, 'Please provide key'],
-      },
-    subject : {
-        type: String,
-        require : [true , ' Please provide subject name'],
-        trim: true, // Add trim property to remove leading/trailing whitespace
-        uppercase: true
+        required: [true, "Please provide key"],
     },
-    branch :{
+    subject: {
         type: String,
-        require : [true , ' Please provide branch'],
+        require: [true, " Please provide subject name"],
         trim: true, // Add trim property to remove leading/trailing whitespace
-        uppercase: true
+        uppercase: true,
     },
-    div :{
+    branch: {
         type: String,
-        require : [true , ' Please provide Division'],
+        require: [true, " Please provide branch"],
         trim: true, // Add trim property to remove leading/trailing whitespace
-        uppercase: true
+        uppercase: true,
     },
-    year :{
+    div: {
         type: String,
-        require : [true , ' Please provide Year'],
+        require: [true, " Please provide Division"],
         trim: true, // Add trim property to remove leading/trailing whitespace
-        uppercase: true
+        uppercase: true,
+    },
+    year: {
+        type: String,
+        require: [true, " Please provide Year"],
+        trim: true, // Add trim property to remove leading/trailing whitespace
+        uppercase: true,
     },
     folder: [],
-    latitude:{
-        type: Schema.Types.Double,
+    latitude: {
+        type: Number,
         require: true,
     },
-    longitude:{
-        type: Schema.Types.Double,
+    longitude: {
+        type: Number,
         require: true,
     },
-    altitude:{
-        type: Schema.Types.Double,
-        require: true,
-    }
-})
+    // altitude: {
+    //     type: Number,
+    //     require: true,
+    // },
+});
 
-
-module.exports = mongoose.model('Session', UserSchema)
+module.exports = mongoose.model("Session", UserSchema);

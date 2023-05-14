@@ -1,5 +1,5 @@
 const url_user = new URLSearchParams(window.location.search);
-console.log("url_user",url_user.toString());
+console.log("url_user", url_user.toString());
 const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
@@ -36,6 +36,6 @@ async function Cancel() {
         })
         .catch((err) => {
             Message.style.color = "#ff3f3f";
-            Message.textContent = "Cancel Failed";
+            Message.textContent = err.response.data.msg;
         });
 }
