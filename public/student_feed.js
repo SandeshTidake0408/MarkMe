@@ -5,7 +5,8 @@ const userType = document.querySelector(".user_type");
 const branch = document.querySelector(".branch");
 const div = document.querySelector(".Div");
 const roll_no = document.querySelector(".roll_no");
-let user_roll; // for global use
+let user_roll;
+let user_mail; // for global use
 
 //profile access
 
@@ -22,6 +23,7 @@ async function user_data() {
             div.textContent = userData.userDiv;
             roll_no.textContent = userData.userRollNo;
             user_roll = userData.userRollNo;
+            user_mail = userData.userEmail;
         })
         .catch((err) => {
             console.error(err);
@@ -83,6 +85,7 @@ markme_btn.addEventListener("click", async () => {
             key: key,
             subject: subject,
             rollNo: rollno,
+            email: user_mail,
             studentLat: S_Latitude,
             studentLon: S_Longitude,
             studentAlt: S_Altitude,
