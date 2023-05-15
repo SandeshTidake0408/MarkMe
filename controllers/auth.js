@@ -165,11 +165,9 @@ const markData = async (req, res) => {
     const base = `${subject}_${key}`;
     const presentSession = await Session.findOne({ base });
     if (!presentSession) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .send(
-                "Attention: Session not found or it appears you may be running late. "
-            );
+        return res.status(StatusCodes.BAD_REQUEST).send({
+            msg: "Attention: Session not found or it appears you may be running late.",
+        });
     }
 
     const distance = await calculateDistance(
@@ -180,14 +178,14 @@ const markData = async (req, res) => {
     );
     // const height = abs(studentAlt - presentSession.altitude);
 
-    if (distance > 0.035 ) {
+    if (distance > 0.035) {
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .send("You are not in range!!!");
+            .send({ msg: "You are not in range!!!" });
     }
     const user = await User.findOne({ email });
     if (!user) {
-        return res.send("No user present");
+        return res.send({ msg: "No user present" });
     }
     if (
         user.div != presentSession.div ||
@@ -211,20 +209,18 @@ const markData = async (req, res) => {
     );
 
     if (result.nModified === 0) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .send(
-                "Attention: Session not found or it appears you may be running late."
-            );
+        return res.status(StatusCodes.BAD_REQUEST).send({
+            msg: "Attention: Session not found or it appears you may be running late.",
+        });
     }
 
-    res.status(StatusCodes.CREATED).send(
-        `Marked data for session with key ${key} and subject ${subject}`
-    );
+    res.status(StatusCodes.CREATED).send({
+        msg: "Attendance Marked Successfully",
+    });
     console.log("end of markData");
 };
 
-// Function to calculate distance between two points using Haversine formula
+// Function to calculate distance between two points using Haversine formula       ${key} `Marked data for session with key and subject ${subject}`
 function calculateDistance(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
     var dLat = deg2rad(lat2 - lat1);
