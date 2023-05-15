@@ -40,6 +40,6 @@ async function handelRegister() {
             window.location.href = "login.html";
         })
         .catch((error) => {
-            alert(error.message);
+            alert(error.response.data.msg);
         });
 }
