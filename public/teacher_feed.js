@@ -104,13 +104,13 @@ async function createPost() {
                 var url = `T_feed_2.html?name=${encodeURIComponent(
                     email
                 )}&id=${encodeURIComponent(id)}`;
-                // window.location.href = url;
+                window.location.href = url;
             }, 1000);
         })
 
         .catch((err) => {
             Message.style.color = "#ff3f3f";
-            // Message.textContent = "Somthing might be wrong please try again !!";
-            console.log(err.response.data.msg);
+            Message.textContent = err.response.data.msg;
+            // console.log(err.response.data.msg);
         });
 }
