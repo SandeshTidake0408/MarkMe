@@ -170,12 +170,13 @@ const markData = async (req, res) => {
         });
     }
 
-    const distance = await calculateDistance(
+    const distance =calculateDistance(
         presentSession.latitude,
-        presentSession.altitude,
+        presentSession.longitude,
         studentLat,
         studentLon
     );
+    console.log(distance)
     // const height = abs(studentAlt - presentSession.altitude);
 
     if (distance > 0.035) {
@@ -217,7 +218,7 @@ const markData = async (req, res) => {
     res.status(StatusCodes.CREATED).send({
         msg: "Attendance Marked Successfully",
     });
-    console.log("end of markData");
+    console.log(user.firstName ,distance );
 };
 
 // Function to calculate distance between two points using Haversine formula       ${key} `Marked data for session with key and subject ${subject}`
