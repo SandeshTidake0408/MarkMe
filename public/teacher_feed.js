@@ -103,7 +103,7 @@ async function createPost() {
                 var url = `T_feed_2.html?name=${encodeURIComponent(
                     email
                 )}&id=${encodeURIComponent(id)}`;
-                // window.location.href = url;
+                window.location.href = url;
             }, 1000);
         })
 

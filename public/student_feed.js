@@ -41,7 +41,7 @@ function submitHandler(event) {
 //Location access
 var S_Latitude;
 var S_Longitude;
-var S_Altitude;
+// var S_Altitude;
 
 function student_location() {
     const options_obj = {
@@ -88,11 +88,10 @@ markme_btn.addEventListener("click", async () => {
             email: user_mail,
             studentLat: S_Latitude,
             studentLon: S_Longitude,
-            studentAlt: S_Altitude,
         })
         .then((result) => {
             mess.style.color = "#40ba55";
-            mess.textContent = result.data;
+            mess.textContent = result.data.msg;
         })
         .catch((error) => {
             if (error.response) {
