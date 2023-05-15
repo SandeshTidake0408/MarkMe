@@ -7,6 +7,7 @@ const mobileno = document.getElementById("m_no");
 const email = document.getElementById("mail");
 const password = document.getElementById("pass");
 const cpassword = document.getElementById("c_pass");
+const message = document.querySelector(".message");
 
 function submitHandler(event) {
     // to prevent default submit action of html form
@@ -36,6 +37,7 @@ async function handelRegister() {
             branch: Branch,
         })
         .then((response) => {
+            // message.textContent="Sign Up Successfull"
             alert("SignUp Successful");
             window.location.href = "login.html";
         })

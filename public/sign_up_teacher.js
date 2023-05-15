@@ -26,6 +26,7 @@ async function handelRegister() {
       confPassword: CPassword,
     })
     .then((res) => {
+      
       alert("SignUp Successful");
       window.location.href = "login.html";
     })
