@@ -75,15 +75,15 @@ student_location();
 //ip extraction
 async function getIpAddress() {
     try {
-      const response = await axios.get('https://api.ipify.org?format=json');
-      ipAddress = response.data.ip;
-      console.log(ipAddress); // Output the IP address to 
+        const response = await axios.get("https://api.ipify.org?format=json");
+        ipAddress = response.data.ip;
+        console.log(ipAddress); // Output the IP address to
     } catch (error) {
-      console.error('Error:', error);
+        console.error("Error:", error);
     }
-  }
-  
-  getIpAddress();
+}
+
+getIpAddress();
 
 const sub = document.getElementById("subject");
 const code = document.getElementById("code");
@@ -102,6 +102,7 @@ markme_btn.addEventListener("click", async () => {
             email: user_mail,
             studentLat: S_Latitude,
             studentLon: S_Longitude,
+            deviceId: ipAddress,
         })
         .then((result) => {
             mess.style.color = "#40ba55";

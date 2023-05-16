@@ -50,7 +50,7 @@ const studentRegister = async (req, res) => {
     console.log("in student register");
 };
 
-// teacher register 
+// teacher register
 
 const teacherRegister = async (req, res) => {
     const { firstName, lastName, email, password, confPassword } = req.body;
@@ -165,8 +165,15 @@ const generateSession = async (req, res) => {
 // ${key} `Marked data for session with key and subject ${subject}`
 const markData = async (req, res) => {
     console.log("start of mark data");
-    const { key, subject, email, studentLat, studentLon, studentAlt , deviceId } =
-        req.body;
+    const {
+        key,
+        subject,
+        email,
+        studentLat,
+        studentLon,
+        studentAlt,
+        deviceId,
+    } = req.body;
 
     const base = `${subject}_${key}`;
     const presentSession = await Session.findOne({ base });
@@ -180,32 +187,38 @@ const markData = async (req, res) => {
     if (!user) {
         return res.send({ msg: "No user present" });
     }
-    
-    console.log("i am here")
-    const checkRollNo = await Session.findOne({base : base , folder: { $elemMatch: { rollNo: user.rollNo } } })
-    console.log(checkRollNo)
-    if(checkRollNo){
+
+    console.log("i am here");
+    const checkRollNo = await Session.findOne({
+        base: base,
+        folder: { $elemMatch: { rollNo: user.rollNo } },
+    });
+    console.log(checkRollNo);
+    if (checkRollNo) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-            msg:"Already Mark!!!"
+            msg: "Already Mark!!!",
         });
     }
-    
-    const ip = await Session.findOne({base : base , deviceIdArray: { $elemMatch: { deviceId: deviceId } } });
-    
+
+    const ip = await Session.findOne({
+        base: base,
+        deviceIdArray: { $elemMatch: { deviceId: deviceId } },
+    });
+
     console.log(ip);
-    if(ip){
+    if (ip) {
         return res.status(StatusCodes.CONFLICT).json({
             // msg:"Don't ever try too cheat! MArkMe is watching 👀 you",
-            msg:"Na Munna Na !!! MarkMe is 👀 you"
-        })
+            msg: "Na Munna Na !!! MarkMe is 👀 you",
+        });
     }
-    const distance =calculateDistance(
+    const distance = calculateDistance(
         presentSession.latitude,
         presentSession.longitude,
         studentLat,
         studentLon
     );
-    console.log(distance)
+    console.log(distance);
     // const height = abs(studentAlt - presentSession.altitude);
 
     if (distance > 0.035) {
@@ -231,9 +244,9 @@ const markData = async (req, res) => {
                     firstName: user.firstName,
                     lastName: user.lastName,
                 },
-                deviceIdArray:{
+                deviceIdArray: {
                     deviceId: deviceId,
-                }
+                },
             },
         }
     );
@@ -250,9 +263,9 @@ const markData = async (req, res) => {
     console.log("end of markData");
 };
 
-// Function to calculate distance between two points using Haversine formula   
+// Function to calculate distance between two points using Haversine formula
 function calculateDistance(lat1, lon1, lat2, lon2) {
-    console.log(lat1," ", lon1," ", lat2, " " ,lon2)
+    console.log(lat1, " ", lon1, " ", lat2, " ", lon2);
     var R = 6371; // Radius of the earth in km
     var dLat = deg2rad(lat2 - lat1);
     var dLon = deg2rad(lon2 - lon1);
