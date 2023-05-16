@@ -153,6 +153,7 @@ const generateSession = async (req, res) => {
             latitude,
             longitude,
             // altitude,
+            xl,
         });
         res.status(StatusCodes.CREATED).json({
             msg: `Session Created Successfully with code ${key}`,
@@ -303,6 +304,16 @@ const deleteSession = async (req, res) => {
     res.status(200).json({ msg: "Session deleted Successfully" });
 };
 
+const downloadSheet=async(req,res) => {
+    const base = req.params.base;
+
+    const lecture = await Session.findOne({base : base});
+
+    await lecture.folder.sort((a, b) => a.rollNo - b.rollNo);
+    // res.send(lecture.folder)
+
+}
+
 module.exports = {
     studentRegister,
     teacherRegister,
@@ -311,4 +322,5 @@ module.exports = {
     generateSession,
     markData,
     deleteSession,
+    downloadSheet,
 };

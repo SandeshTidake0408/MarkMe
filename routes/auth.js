@@ -8,6 +8,7 @@ const {
     generateSession,
     markData,
     deleteSession,
+    downloadSheet,
 } = require("../controllers/auth");
 
 router.post("/auth/register/student", studentRegister);
@@ -17,4 +18,5 @@ router.get("/feed/:email", feedData);
 router.post("/generate/session", generateSession);
 router.post("/mark", markData);
 router.post("/delete/:base", deleteSession);
+router.post("/download/:base", downloadSheet);
 module.exports = router;
