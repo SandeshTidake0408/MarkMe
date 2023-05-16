@@ -240,7 +240,7 @@ const markData = async (req, res) => {
     res.status(StatusCodes.CREATED).send({
         msg: "Attendance Marked Successfully",
     });
-    console.log(user.firstName ,distance );
+    console.log("end of markData");
 };
 
 // Function to calculate distance between two points using Haversine formula       ${key} `Marked data for session with key and subject ${subject}`

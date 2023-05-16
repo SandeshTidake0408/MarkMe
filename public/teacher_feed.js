@@ -42,13 +42,14 @@ var T_Longitude;
 function teacher_location() {
     const options_obj = {
         enableHighAccuracy: true,
-        timeout: 2000,
+        timeout: 5000,
     };
     const successCallback = (position) => {
         T_Latitude = position.coords.latitude;
         T_Longitude = position.coords.longitude;
-        T_Altitude = position.coords.altitude;
+
         console.log(T_Longitude);
+        console.log(position);
         console.log(T_Latitude);
     };
     const errorCallback = (error) => {
@@ -109,7 +110,7 @@ async function createPost() {
 
         .catch((err) => {
             Message.style.color = "#ff3f3f";
-            // Message.textContent = "Somthing might be wrong please try again !!";
-            console.log(err.response.data.msg);
+            Message.textContent = err.response.data.msg;
+            // console.log(err.response.data.msg);
         });
 }

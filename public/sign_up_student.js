@@ -7,6 +7,7 @@ const mobileno = document.getElementById("m_no");
 const email = document.getElementById("mail");
 const password = document.getElementById("pass");
 const cpassword = document.getElementById("c_pass");
+const Message = document.querySelector(".message");
 
 function submitHandler(event) {
     // to prevent default submit action of html form
@@ -36,10 +37,21 @@ async function handelRegister() {
             branch: Branch,
         })
         .then((response) => {
-            alert("SignUp Successful");
-            window.location.href = "login.html";
+            Message.style.color = "#40ba55";
+            Message.textContent = "Sign Up Successful";
+            // alert("SignUp Successful");
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 2000);
         })
         .catch((error) => {
-            alert(error.response.data.msg);
+            Message.style.color = "#ff3f3f";
+            if (
+                error.response.data.msg ==
+                "Duplicate value entered for email field, please choose another value"
+            ) {
+                Message.textContent = "Account Already Exist For Same Email";
+            }
+            // alert(error.response.data.msg);
         });
 }
