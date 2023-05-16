@@ -152,7 +152,6 @@ const generateSession = async (req, res) => {
             folder: [],
             latitude,
             longitude,
-            // altitude,
             xl,
         });
         res.status(StatusCodes.CREATED).json({
@@ -216,7 +215,7 @@ const markData = async (req, res) => {
     if (ip) {
         return res.status(StatusCodes.CONFLICT).json({
             // msg:"Don't ever try too cheat! MArkMe is watching 👀 you",
-            msg: "Na Munna Na !!! MarkMe is 👀 you",
+            msg: "Na Munna Na Tu toh apane .....!!! MarkMe is 👀 you",
         });
     }
     const distance = calculateDistance(

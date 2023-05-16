@@ -1,3 +1,5 @@
+const { default: axios } = require("axios");
+
 const url_user = new URLSearchParams(window.location.search);
 console.log("url_user", url_user.toString());
 const userName = document.querySelector(".user_name");
@@ -38,4 +40,16 @@ async function Cancel() {
             Message.style.color = "#ff3f3f";
             Message.textContent = err.response.data.msg;
         });
+}
+
+async function sheet_download() {
+    const res = await axios.post(`http://localhost:4000/api/v1/download/${id}`)
+
+    .then((result) => {
+        
+        
+    }).catch((err) => {
+        
+    });
+
 }
