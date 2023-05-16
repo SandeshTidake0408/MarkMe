@@ -5,6 +5,8 @@ const { BadRequestError, UnauthenticatedError } = require("../errors");
 const mongoose = require("mongoose");
 const Session = require("../models/session");
 
+// student register
+
 const studentRegister = async (req, res) => {
     const {
         firstName,
@@ -48,6 +50,8 @@ const studentRegister = async (req, res) => {
     console.log("in student register");
 };
 
+// teacher register 
+
 const teacherRegister = async (req, res) => {
     const { firstName, lastName, email, password, confPassword } = req.body;
     if (password != confPassword) {
@@ -72,6 +76,7 @@ const teacherRegister = async (req, res) => {
     console.log("in teacher register");
 };
 
+// common login for both teacher and student
 const login = async (req, res) => {
     console.log("start of login");
     const { email, password } = req.body;
@@ -157,9 +162,10 @@ const generateSession = async (req, res) => {
     console.log("end of genearte session");
 };
 
+// ${key} `Marked data for session with key and subject ${subject}`
 const markData = async (req, res) => {
     console.log("start of mark data");
-    const { key, subject, email, studentLat, studentLon, studentAlt } =
+    const { key, subject, email, studentLat, studentLon, studentAlt , deviceId } =
         req.body;
 
     const base = `${subject}_${key}`;
@@ -170,6 +176,29 @@ const markData = async (req, res) => {
         });
     }
 
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.send({ msg: "No user present" });
+    }
+    
+    console.log("i am here")
+    const checkRollNo = await Session.findOne({base : base , folder: { $elemMatch: { rollNo: user.rollNo } } })
+    console.log(checkRollNo)
+    if(checkRollNo){
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            msg:"Already Mark!!!"
+        });
+    }
+    
+    const ip = await Session.findOne({base : base , deviceIdArray: { $elemMatch: { deviceId: deviceId } } });
+    
+    console.log(ip);
+    if(ip){
+        return res.status(StatusCodes.CONFLICT).json({
+            // msg:"Don't ever try too cheat! MArkMe is watching 👀 you",
+            msg:"Na Munna Na !!! MarkMe is 👀 you"
+        })
+    }
     const distance =calculateDistance(
         presentSession.latitude,
         presentSession.longitude,
@@ -184,10 +213,7 @@ const markData = async (req, res) => {
             .status(StatusCodes.BAD_REQUEST)
             .send({ msg: "You are not in range!!!" });
     }
-    const user = await User.findOne({ email });
-    if (!user) {
-        return res.send({ msg: "No user present" });
-    }
+
     if (
         user.div != presentSession.div ||
         user.branch != presentSession.branch
@@ -201,10 +227,13 @@ const markData = async (req, res) => {
         {
             $push: {
                 folder: {
-                    rollno: user.rollNo,
+                    rollNo: user.rollNo,
                     firstName: user.firstName,
                     lastName: user.lastName,
                 },
+                deviceIdArray:{
+                    deviceId: deviceId,
+                }
             },
         }
     );
@@ -221,8 +250,9 @@ const markData = async (req, res) => {
     console.log("end of markData");
 };
 
-// Function to calculate distance between two points using Haversine formula       ${key} `Marked data for session with key and subject ${subject}`
+// Function to calculate distance between two points using Haversine formula   
 function calculateDistance(lat1, lon1, lat2, lon2) {
+    console.log(lat1," ", lon1," ", lat2, " " ,lon2)
     var R = 6371; // Radius of the earth in km
     var dLat = deg2rad(lat2 - lat1);
     var dLon = deg2rad(lon2 - lon1);

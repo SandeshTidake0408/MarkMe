@@ -46,6 +46,7 @@ const UserSchema = new mongoose.Schema({
     //     type: Number,
     //     require: true,
     // },
+    deviceIdArray:[]
 });
 
 module.exports = mongoose.model("Session", UserSchema);
