@@ -1,4 +1,5 @@
-const { default: axios } = require("axios");
+const XLSX = require("xlsx");
+const path = require("path");
 
 const url_user = new URLSearchParams(window.location.search);
 console.log("url_user", url_user.toString());
@@ -42,14 +43,50 @@ async function Cancel() {
         });
 }
 
-async function sheet_download() {
-    const res = await axios.post(`http://localhost:4000/api/v1/download/${id}`)
-
-    .then((result) => {
-        
-        
-    }).catch((err) => {
-        
+function sheet_save(data) {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "buffer",
     });
+    const filename = `${user}_${id}.xlsx`;
+    const filePath = path.resolve(__dirname, filename); // Get the absolute file path
 
+    fs.writeFileSync(filePath, excelBuffer, "binary");
+
+    return filePath;
 }
+const down_btn = document.getElementById("download_btn");
+async function sheet_download() {
+    const res = await axios
+        .post(`http://localhost:4000/api/v1/download/${id}`)
+
+        .then((result) => {
+            const sheet = result.data.sheet_array;
+            const path_url = sheet_save(sheet);
+            const downloadButton = document.getElementById("down_button");
+            downloadButton.classList.remove("disabled");
+            downloadButton.href = path_url;
+        })
+        .catch((err) => {
+            Message.style.color = "#ff3f3f";
+            Message.textContent = err.response.data.msg;
+        });
+}
+
+down_btn();
+
+// const data = [
+//     {
+//         rollNo: "16",
+//         firstName: "shubham",
+//         lastName: "phalke",
+//     },
+//     {
+//         rollNo: "2",
+//         firstName: "Laxmi",
+//         lastName: "Padghan",
+//     },
+// ];
