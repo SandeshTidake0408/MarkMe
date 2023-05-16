@@ -41,6 +41,7 @@ function submitHandler(event) {
 //Location access
 var S_Latitude;
 var S_Longitude;
+var ipAddress;
 // var S_Altitude;
 
 function student_location() {
@@ -70,6 +71,19 @@ function student_location() {
     }
 }
 student_location();
+
+//ip extraction
+async function getIpAddress() {
+    try {
+      const response = await axios.get('https://api.ipify.org?format=json');
+      ipAddress = response.data.ip;
+      console.log(ipAddress); // Output the IP address to 
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
+  getIpAddress();
 
 const sub = document.getElementById("subject");
 const code = document.getElementById("code");
