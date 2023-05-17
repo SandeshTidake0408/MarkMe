@@ -1,18 +1,24 @@
-const XLSX = window.XLSX;
-const axios = window.axios;
-const path = window.path; // Not necessary if you're not using path in your code
-const fs = window.fs; // Not necessary if you're not using fs in your code
-
 const url_user = new URLSearchParams(window.location.search);
-console.log("url_user", url_user.toString());
 const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
+const downloadButton = document.getElementById("download_btn");
 const user = url_user.get("name");
 const id = url_user.get("id");
-console.log(user);
 
-console.log(id);
+//date and time for file name
+const currentDate = new Date();
+const formattedDate = currentDate
+    .toLocaleString("en-US", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+    })
+    .replace(/[^\w\s]/g, "-");
+
 async function user_data() {
     const response = await axios
         .get(`http://localhost:4000/api/v1/feed/${user}`)
@@ -48,19 +54,20 @@ async function Cancel() {
 function sheet_save(data) {
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(data);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
     const excelBuffer = XLSX.write(workbook, {
         bookType: "xlsx",
         type: "buffer",
     });
-    const filename = `${user}_${id}.xlsx`;
-    const filePath = path.resolve(__dirname, filename); // Get the absolute file path
-
-    fs.writeFileSync(filePath, excelBuffer, "binary");
+    const blob = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const filePath = URL.createObjectURL(blob);
 
     return filePath;
 }
-const down_btn = document.getElementById("download_btn");
+// console.log("hii ", sheet_save(data));
+
 async function sheet_download() {
     const res = await axios
         .post(`http://localhost:4000/api/v1/download/${id}`)
@@ -68,27 +75,14 @@ async function sheet_download() {
         .then((result) => {
             const sheet = result.data.sheet_array;
             const path_url = sheet_save(sheet);
-            const downloadButton = document.getElementById("down_button");
             downloadButton.classList.remove("disabled");
             downloadButton.href = path_url;
+            downloadButton.download = `${user}_${id}_${formattedDate}.xlsx`;
         })
         .catch((err) => {
             Message.style.color = "#ff3f3f";
-            Message.textContent = err.response.data.msg;
+            console.error(err);
         });
 }
 
-down_btn();
-
-// const data = [
-//     {
-//         rollNo: "16",
-//         firstName: "shubham",
-//         lastName: "phalke",
-//     },
-//     {
-//         rollNo: "2",
-//         firstName: "Laxmi",
-//         lastName: "Padghan",
-//     },
-// ];
+sheet_download();
