@@ -3,6 +3,7 @@ const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
 const Message = document.querySelector(".message");
+const countElement = document.getElementById("count");
 const timerElement = document.getElementById("timer");
 const downloadButton = document.getElementById("download_btn");
 const user = url_user.get("name");
@@ -61,15 +62,18 @@ function startTimer(endTime) {
         var currentTime = new Date().getTime();
         var remainingTime = endTime - currentTime;
 
-        var minutes = Math.floor(
-            (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
-        );
-        var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+        if (remainingTime > 0) {
+            var minutes = Math.floor(
+                (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
 
-        var formattedMinutes = ("0" + minutes).slice(-2);
-        var formattedSeconds = ("0" + seconds).slice(-2);
-        timerElement.textContent = formattedMinutes + ":" + formattedSeconds;
-        console.log(formattedMinutes + ":" + formattedSeconds);
+            var formattedMinutes = ("0" + minutes).slice(-2);
+            var formattedSeconds = ("0" + seconds).slice(-2);
+            timerElement.textContent =
+                "Time Remaining: " + formattedMinutes + ":" + formattedSeconds;
+            // console.log(formattedMinutes + ":" + formattedSeconds);
+        }
 
         if (remainingTime <= 0) {
             clearInterval(intervalId);
@@ -78,16 +82,18 @@ function startTimer(endTime) {
         }
     }, 1000);
 }
-startTimer();
 
 async function get_time() {
     const res = await axios
-        .get("http://localhost:4000/api/v1/feed/timer")
+        .get(`http://localhost:4000/api/v1/feed/timer/${id}`)
         .then((result) => {
             server_time = result.data.endTime;
             startTimer(server_time);
         })
-        .catch((err) => {});
+        .catch((err) => {
+            Message.style.color = "#ff3f3f";
+            Message.textContent = err.response.data.msg;
+        });
 }
 get_time();
 
@@ -115,6 +121,8 @@ async function sheet_download() {
         .then((result) => {
             const sheet = result.data.sheet_array;
             const path_url = sheet_save(sheet);
+            const len = sheet.length;
+            countElement.textContent = `Count : ${len}`;
             downloadButton.classList.remove("disabled");
             downloadButton.href = path_url;
             downloadButton.download = `${user}_${id}_${formattedDate}.xlsx`;
