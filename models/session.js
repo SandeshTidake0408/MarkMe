@@ -51,6 +51,10 @@ const UserSchema = new mongoose.Schema({
     //     data: Buffer,
     //     contentType: String
     // },
+    endTime : {
+        type: Number,
+        require : true
+    }
 });
 
 module.exports = mongoose.model("Session", UserSchema);

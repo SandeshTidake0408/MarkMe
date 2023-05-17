@@ -134,6 +134,22 @@ const feedData = async (req, res) => {
     }
 };
 
+const feedTimer = async (req , res)=>{
+    const base = req.params.base;
+    // console.log(base)
+    const lecture = await Session.findOne({base : base});
+    if(!lecture){
+        return res.status(StatusCodes.BAD_GATEWAY).json({
+            msg:`No session found with base ${base} `,
+        })
+    }
+    // console.log(lecture)
+    // console.log(lecture.endTime);
+    res.status(StatusCodes.OK).json({
+       endTime : lecture.endTime
+    })
+}
+
 const generateSession = async (req, res) => {
     console.log("start of generate session");
     const { base, key, subject, year, branch, div, latitude, longitude } =
@@ -142,6 +158,8 @@ const generateSession = async (req, res) => {
     if (checkBase) {
         throw new BadRequestError("Already session is present with same key");
     } else {
+        const endTime =new Date().getTime() + (5*60*1000);
+        // console.log(endTime)
         const newSession = await Session.create({
             base,
             key,
@@ -153,6 +171,7 @@ const generateSession = async (req, res) => {
             latitude,
             longitude,
             // xl,
+            endTime,
         });
         res.status(StatusCodes.CREATED).json({
             msg: `Session Created Successfully with code ${key}`,
@@ -321,4 +340,5 @@ module.exports = {
     markData,
     deleteSession,
     downloadSheet,
+    feedTimer,
 };
