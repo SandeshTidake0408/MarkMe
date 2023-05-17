@@ -152,7 +152,7 @@ const generateSession = async (req, res) => {
             folder: [],
             latitude,
             longitude,
-            xl,
+            // xl,
         });
         res.status(StatusCodes.CREATED).json({
             msg: `Session Created Successfully with code ${key}`,
@@ -204,13 +204,14 @@ const markData = async (req, res) => {
         base: base,
         deviceIdArray: { $elemMatch: { deviceId: deviceId } },
     });
-    const geo = geoip.lookup(clientIP);
+    // const geo = geoip.lookup(clientIP);
 
-    // Check if the IP is outside India
-    if (geo && geo.country !== 'IN') {
-        // IP is outside India, block the request
-        return res.status(403).send('Access denied. IP address outside India.');
-    }
+    // // Check if the IP is outside India
+    // if (geo && geo.country !== 'IN') {
+    //     // IP is outside India, block the request
+    //     return res.status(403).send('Access denied. IP address outside India.');
+    // }
+    console.log(deviceId)
     console.log(ip);
     if (ip) {
         return res.status(StatusCodes.CONFLICT).json({
@@ -227,7 +228,7 @@ const markData = async (req, res) => {
     console.log(distance);
     // const height = abs(studentAlt - presentSession.altitude);
 
-    if (distance > 0.035) {
+    if (distance > 25) {
         return res
             .status(StatusCodes.BAD_REQUEST)
             .send({ msg: "You are not in range!!!" });
@@ -308,8 +309,8 @@ const downloadSheet=async(req,res) => {
 
     const lecture = await Session.findOne({base : base});
 
-    await lecture.folder.sort((a, b) => a.rollNo - b.rollNo);
-    // res.send(lecture.folder)
+    const sheet= await lecture.folder.sort((a, b) => a.rollNo - b.rollNo);
+    res.status(StatusCodes.OK).json({sheet})
 
 }
 

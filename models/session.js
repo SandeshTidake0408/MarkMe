@@ -47,10 +47,10 @@ const UserSchema = new mongoose.Schema({
     //     require: true,
     // },
     deviceIdArray:[],
-    xl: {
-        data: Buffer,
-        contentType: String
-    },
+    // xl: {
+    //     data: Buffer,
+    //     contentType: String
+    // },
 });
 
 module.exports = mongoose.model("Session", UserSchema);
