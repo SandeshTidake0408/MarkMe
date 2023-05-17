@@ -2,6 +2,8 @@ const url_user = new URLSearchParams(window.location.search);
 const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
+const Message = document.querySelector(".message");
+const timerElement = document.getElementById("timer");
 const downloadButton = document.getElementById("download_btn");
 const user = url_user.get("name");
 const id = url_user.get("id");
@@ -34,7 +36,7 @@ async function user_data() {
 }
 
 user_data();
-const Message = document.querySelector(".message");
+
 async function Cancel() {
     const res = await axios
         .post(`http://localhost:4000/api/v1/delete/${id}`, {
@@ -50,6 +52,44 @@ async function Cancel() {
             Message.textContent = err.response.data.msg;
         });
 }
+
+//timer
+function startTimer(endTime) {
+    // var duration = 5 * 60 * 1000; // 5 minutes in milliseconds
+    // var endTime = new Date().getTime() + duration;
+    var intervalId = setInterval(function () {
+        var currentTime = new Date().getTime();
+        var remainingTime = endTime - currentTime;
+
+        var minutes = Math.floor(
+            (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+        var formattedMinutes = ("0" + minutes).slice(-2);
+        var formattedSeconds = ("0" + seconds).slice(-2);
+        timerElement.textContent = formattedMinutes + ":" + formattedSeconds;
+        console.log(formattedMinutes + ":" + formattedSeconds);
+
+        if (remainingTime <= 0) {
+            clearInterval(intervalId);
+            console.log("Timer has ended!");
+            sheet_download();
+        }
+    }, 1000);
+}
+startTimer();
+
+async function get_time() {
+    const res = await axios
+        .get("http://localhost:4000/api/v1/feed/timer")
+        .then((result) => {
+            server_time = result.data.endTime;
+            startTimer(server_time);
+        })
+        .catch((err) => {});
+}
+get_time();
 
 function sheet_save(data) {
     const workbook = XLSX.utils.book_new();
@@ -84,5 +124,3 @@ async function sheet_download() {
             console.error(err);
         });
 }
-
-sheet_download();
