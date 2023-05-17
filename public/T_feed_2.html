@@ -8,11 +8,14 @@
     <title>Download attendance</title>
     <link rel="stylesheet" href="T_feed_2.css">
     <link rel="stylesheet" href="shared.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="T_feed_2.js" type="module"></script>
     <link href="" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+
 </head>
 
 </head>
@@ -59,7 +62,7 @@
         </div>
 
         <div class="sheet block">
-            <button onclick="sheet_download()">Download Sheet</button>
+            <a href="" id="download_btn" class="disabled">Download Sheet</a>
         </div>
 
     </div>

@@ -4,7 +4,7 @@ const teacher = require("../models/teacher");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 const mongoose = require("mongoose");
 const Session = require("../models/session");
-const geoip = require('geoip-lite');
+const geoip = require("geoip-lite");
 // student register
 
 const studentRegister = async (req, res) => {
@@ -207,11 +207,10 @@ const markData = async (req, res) => {
     // const geo = geoip.lookup(clientIP);
 
     // // Check if the IP is outside India
-    // if (geo && geo.country !== 'IN') {
+    // if (geo && geo.country !== "IN") {
     //     // IP is outside India, block the request
-    //     return res.status(403).send('Access denied. IP address outside India.');
+    //     return res.status(403).send("Access denied. IP address outside India.");
     // }
-    console.log(deviceId)
     console.log(ip);
     if (ip) {
         return res.status(StatusCodes.CONFLICT).json({
@@ -279,9 +278,9 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     var a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(deg2rad(lat1)) *
-        Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
+            Math.cos(deg2rad(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c; // Distance in km
     return d;
@@ -304,15 +303,14 @@ const deleteSession = async (req, res) => {
     res.status(200).json({ msg: "Session deleted Successfully" });
 };
 
-const downloadSheet=async(req,res) => {
+const downloadSheet = async (req, res) => {
     const base = req.params.base;
 
-    const lecture = await Session.findOne({base : base});
+    const lecture = await Session.findOne({ base: base });
 
-    const sheet= await lecture.folder.sort((a, b) => a.rollNo - b.rollNo);
-    res.status(StatusCodes.OK).json({sheet})
-
-}
+    const sheet = await lecture.folder.sort((a, b) => a.rollNo - b.rollNo);
+    res.status(StatusCodes.OK).json({ sheet_array: sheet });
+};
 
 module.exports = {
     studentRegister,

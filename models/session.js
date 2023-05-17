@@ -46,7 +46,7 @@ const UserSchema = new mongoose.Schema({
     //     type: Number,
     //     require: true,
     // },
-    deviceIdArray:[],
+    deviceIdArray: [],
     // xl: {
     //     data: Buffer,
     //     contentType: String
