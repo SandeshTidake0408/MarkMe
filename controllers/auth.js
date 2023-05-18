@@ -134,21 +134,21 @@ const feedData = async (req, res) => {
     }
 };
 
-const feedTimer = async (req , res)=>{
+const feedTimer = async (req, res) => {
     const base = req.params.base;
     // console.log(base)
-    const lecture = await Session.findOne({base : base});
-    if(!lecture){
+    const lecture = await Session.findOne({ base: base });
+    if (!lecture) {
         return res.status(StatusCodes.BAD_GATEWAY).json({
-            msg:`No session found with base ${base} `,
-        })
+            msg: `No session found with base ${base} `,
+        });
     }
     // console.log(lecture)
     // console.log(lecture.endTime);
     res.status(StatusCodes.OK).json({
-       endTime : lecture.endTime
-    })
-}
+        endTime: lecture.endTime,
+    });
+};
 
 const generateSession = async (req, res) => {
     console.log("start of generate session");
@@ -158,7 +158,7 @@ const generateSession = async (req, res) => {
     if (checkBase) {
         throw new BadRequestError("Already session is present with same key");
     } else {
-        const endTime =new Date().getTime() + (5*60*1000);
+        const endTime = new Date().getTime() + 5 * 60 * 1000;
         // console.log(endTime)
         const newSession = await Session.create({
             base,
@@ -215,7 +215,7 @@ const markData = async (req, res) => {
     console.log(checkRollNo);
     if (checkRollNo) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-            msg: "Already Mark!!!",
+            msg: "You are already Marked !!",
         });
     }
 
@@ -231,12 +231,12 @@ const markData = async (req, res) => {
     //     return res.status(403).send("Access denied. IP address outside India.");
     // }
     console.log(ip);
-    // if (ip) {
-    //     return res.status(StatusCodes.CONFLICT).json({
-    //         // msg:"Don't ever try too cheat! MarkMe is watching 👀 you",
-    //         msg: "Na Munna Na Tu toh apane .....!!! MarkMe is 👀 you",
-    //     });
-    // }
+    if (ip) {
+        return res.status(StatusCodes.CONFLICT).json({
+            // msg:"Don't ever try too cheat! MarkMe is watching 👀 you",
+            msg: "Na Munna Na Tu toh apane .....!!! MarkMe is 👀 you",
+        });
+    }
     const distance = calculateDistance(
         presentSession.latitude,
         presentSession.longitude,

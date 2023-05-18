@@ -42,7 +42,7 @@ async function handelRegister() {
             // alert("SignUp Successful");
             setTimeout(() => {
                 window.location.href = "login.html";
-            }, 2000);
+            }, 1500);
         })
         .catch((error) => {
             Message.style.color = "#ff3f3f";
