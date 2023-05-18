@@ -190,17 +190,28 @@ const markData = async (req, res) => {
         email,
         studentLat,
         studentLon,
-        studentAlt,
         deviceId,
     } = req.body;
 
+    const currentTime = new Date().getTime();
     const base = `${subject}_${key}`;
+
     const presentSession = await Session.findOne({ base });
     if (!presentSession) {
         return res.status(StatusCodes.BAD_REQUEST).send({
             msg: "Attention: Session not found or it appears you may be running late.",
         });
     }
+
+    console.log(presentSession.endTime)
+    console.log(currentTime)
+
+    if(presentSession.endTime<=currentTime){
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            msg:"You are running out of Time !!!"
+        })
+    }
+
 
     const user = await User.findOne({ email });
     if (!user) {
