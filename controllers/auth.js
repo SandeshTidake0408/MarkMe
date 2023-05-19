@@ -104,6 +104,7 @@ const login = async (req, res) => {
         email_id: user.email,
         token,
     });
+    console.log("end of login");
 };
 
 const feedData = async (req, res) => {
@@ -184,6 +185,7 @@ const generateSession = async (req, res) => {
 
 // ${key} `Marked data for session with key and subject ${subject}`
 const markData = async (req, res) => {
+
     console.log("start of mark data");
     const {
         key,
@@ -204,8 +206,8 @@ const markData = async (req, res) => {
         });
     }
 
-    console.log(presentSession.endTime)
-    console.log(currentTime)
+    // console.log(presentSession.endTime)
+    // console.log(currentTime)
 
     if(presentSession.endTime<=currentTime){
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -224,7 +226,7 @@ const markData = async (req, res) => {
         base: base,
         folder: { $elemMatch: { rollNo: user.rollNo } },
     });
-    console.log(checkRollNo);
+    // console.log(checkRollNo);
     if (checkRollNo) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             msg: "You are already Marked !!",
@@ -275,6 +277,12 @@ const markData = async (req, res) => {
     
     const longMin=locationRange.longitudeRange[0];
     const longMax=locationRange.longitudeRange[1];
+
+    console.log("Student location")
+    console.log(studentLat , " ", studentLon)
+    console.log("Expected to be in range")
+    console.log(locationRange.latitudeRange)
+    console.log(locationRange.longitudeRange)
 
     if(!((studentLat<=latMax && studentLat>=latMin) && (studentLon<=longMax && studentLon>=longMin ))){
             return res
