@@ -242,12 +242,12 @@ const markData = async (req, res) => {
     //     return res.status(403).send("Access denied. IP address outside India.");
     // }
     console.log(ip);
-    if (ip) {
-        return res.status(StatusCodes.CONFLICT).json({
-            // msg:"Don't ever try too cheat! MarkMe is watching 👀 you",
-            msg: "Na Munna Na Tu toh apane .....!!! MarkMe is 👀 you",
-        });
-    }
+    // if (ip) {
+    //     return res.status(StatusCodes.CONFLICT).json({
+    //         // msg:"Don't ever try too cheat! MarkMe is watching 👀 you",
+    //         msg: "Na Munna Na Tu toh apane .....!!! MarkMe is 👀 you",
+    //     });
+    // }
     const distance = calculateDistance(
         presentSession.latitude,
         presentSession.longitude,

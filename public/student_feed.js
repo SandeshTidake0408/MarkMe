@@ -5,6 +5,7 @@ const userType = document.querySelector(".user_type");
 const branch = document.querySelector(".branch");
 const div = document.querySelector(".Div");
 const roll_no = document.querySelector(".roll_no");
+const timerElement = document.getElementById("timer");
 let user_roll;
 let user_mail; // for global use
 
@@ -84,6 +85,49 @@ async function getIpAddress() {
 }
 
 getIpAddress();
+
+//timer
+function startTimer(endTime) {
+    // var duration = 5 * 60 * 1000; // 5 minutes in milliseconds
+    // var endTime = new Date().getTime() + duration;
+    var intervalId = setInterval(function () {
+        var currentTime = new Date().getTime();
+        var remainingTime = endTime - currentTime;
+
+        if (remainingTime > 0) {
+            var minutes = Math.floor(
+                (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            var seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            var formattedMinutes = ("0" + minutes).slice(-2);
+            var formattedSeconds = ("0" + seconds).slice(-2);
+            timerElement.textContent =
+                "Time Remaining: " + formattedMinutes + ":" + formattedSeconds;
+            // console.log(formattedMinutes + ":" + formattedSeconds);
+        }
+
+        if (remainingTime <= 0) {
+            clearInterval(intervalId);
+            console.log("Timer has ended!");
+            // sheet_download();
+        }
+    }, 1000);
+}
+
+async function get_time() {
+    const res = await axios
+        .get(`http://localhost:4000/api/v1/feed/timer/${id}`)
+        .then((result) => {
+            server_time = result.data.endTime;
+            startTimer(server_time);
+        })
+        .catch((err) => {
+            Message.style.color = "#ff3f3f";
+            Message.textContent = err.response.data.msg;
+        });
+}
+get_time();
 
 const sub = document.getElementById("subject");
 const code = document.getElementById("code");
