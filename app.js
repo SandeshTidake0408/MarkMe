@@ -13,6 +13,7 @@ const regRouter = require("./routes/auth");
 app.use(cors());
 
 // middleware
+app.use(express.static('./public'))
 app.use(express.json());
 
 //route
@@ -21,7 +22,6 @@ app.get("/hello", (req, res) => {
 });
 
 app.use("/api/v1", regRouter);
-
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
