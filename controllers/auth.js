@@ -196,6 +196,11 @@ const markData = async (req, res) => {
         deviceId,
     } = req.body;
 
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.send({ msg: "No user present" });
+    }
+
     const currentTime = new Date().getTime();
     const base = `${subject}_${key}`;
 
@@ -213,12 +218,6 @@ const markData = async (req, res) => {
         return res.status(StatusCodes.BAD_REQUEST).json({
             msg:"You are running out of Time !!!"
         })
-    }
-
-
-    const user = await User.findOne({ email });
-    if (!user) {
-        return res.send({ msg: "No user present" });
     }
 
     console.log("i am here");
@@ -270,7 +269,7 @@ const markData = async (req, res) => {
     //         .send({ msg: "You are not in range!!!" });
     // }
 
-    const locationRange = getLocationRangeWithinRadius(studentLat, studentLon, 40);
+    const locationRange = getLocationRangeWithinRadius(presentSession.latitude, presentSession.longitude, 40);
 
     const latMin=locationRange.latitudeRange[0];
     const latMax=locationRange.latitudeRange[1];
