@@ -277,6 +277,7 @@ const markData = async (req, res) => {
     const longMin=locationRange.longitudeRange[0];
     const longMax=locationRange.longitudeRange[1];
 
+    console.log(presentSession.latitude , presentSession.longitude)
     console.log("Student location")
     console.log(studentLat , " ", studentLon)
     console.log("Expected to be in range")
