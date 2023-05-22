@@ -245,13 +245,28 @@ const markData = async (req, res) => {
     //     // IP is outside India, block the request
     //     return res.status(403).send("Access denied. IP address outside India.");
     // }
+<<<<<<< HEAD
+    console.log(ip);
+=======
     // console.log(ip);
+>>>>>>> 4325eee7dfd9b05e2167ccfbe214984fbdc6130e
     // if (ip) {
     //     return res.status(StatusCodes.CONFLICT).json({
     //         // msg:"Don't ever try too cheat! MarkMe is watching 👀 you",
     //         msg: "Na Munna Na Tu toh apane .....!!! MarkMe is 👀 you",
     //     });
     // }
+<<<<<<< HEAD
+    const distance = calculateDistance(
+        presentSession.latitude,
+        presentSession.longitude,
+        studentLat,
+        studentLon
+    );
+    console.log(distance);
+    // const height = abs(studentAlt - presentSession.altitude);
+=======
+>>>>>>> 4325eee7dfd9b05e2167ccfbe214984fbdc6130e
 
 
     // const distance = calculateDistance(
