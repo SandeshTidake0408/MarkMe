@@ -5,8 +5,8 @@ const { BadRequestError, UnauthenticatedError } = require("../errors");
 const Session = require("../models/session");
 const geoip = require("geoip-lite");
 const geolib = require("geolib");
-// student register
 
+// student register
 const studentRegister = async (req, res) => {
     const {
         firstName,
@@ -105,6 +105,7 @@ const login = async (req, res) => {
     console.log("end of login");
 };
 
+// feeding profile data
 const feedData = async (req, res) => {
     const email = req.params.email;
     let user = await teacher.findOne({ email });
@@ -134,6 +135,7 @@ const feedData = async (req, res) => {
     }
 };
 
+//feed for timer , endTime
 const feedTimer = async (req, res) => {
     const base = req.params.base;
     // console.log(base)
@@ -150,6 +152,7 @@ const feedTimer = async (req, res) => {
     });
 };
 
+//generating session
 const generateSession = async (req, res) => {
     console.log("start of generate session");
     const { base, key, subject, year, branch, div, latitude, longitude } =
@@ -200,9 +203,6 @@ const markData = async (req, res) => {
             msg: "Attention: Session not found or it appears you may be running late.",
         });
     }
-
-    // console.log(presentSession.endTime)
-    // console.log(currentTime)
 
     if (presentSession.endTime <= currentTime) {
         return res.status(StatusCodes.BAD_REQUEST).json({
@@ -255,6 +255,17 @@ const markData = async (req, res) => {
     // const distanceInMeters = geolib.getDistance(location1, location2);
     console.log(location1, "  ", location2);
     // console.log('Distance between the two locations:', distanceInMeters, 'km');
+    const tl1 = roundToFourDecimals(location1.latitude);
+    const tl2 = roundToFourDecimals(location1.longitude);
+    const sl1 = roundToFourDecimals(location2.latitude);
+    const sl2 = roundToFourDecimals(location2.longitude);
+
+    if (!inArea(tl1, tl2, sl1, sl2)) {
+        res.status(StatusCodes.BAD_REQUEST).json({
+            msg: "Ooop's You are not in range!!!",
+        });
+    }
+    console.log(tl1, " ", tl2, " ", sl1, " ", sl2);
 
     if (
         user.div != presentSession.div ||
@@ -291,6 +302,28 @@ const markData = async (req, res) => {
     });
     console.log("end of markData");
 };
+
+function roundToFourDecimals(number) {
+    var roundedNumber = Number(Math.round(number + "e4") + "e-4");
+    return roundedNumber;
+}
+
+function inArea(tl1, tl2, sl1, sl2) {
+    if (
+        sl1 <= tl1 + 0.0009 &&
+        sl1 >= tl1 - 0.009 &&
+        sl2 <= tl2 + 0.0009 &&
+        sl2 >= tl2 - 0.009
+    ) {
+        return true;
+    }
+    return false;
+}
+
+// Example usage
+//   var number = 3.14159265359;
+//   var rounded = roundToFourDecimals(number);
+//   console.log(rounded);
 
 const deleteSession = async (req, res) => {
     const base = req.params.base;
