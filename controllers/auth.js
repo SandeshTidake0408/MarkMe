@@ -2,7 +2,6 @@ const User = require("../models/student");
 const { StatusCodes } = require("http-status-codes");
 const teacher = require("../models/teacher");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
-const mongoose = require("mongoose");
 const Session = require("../models/session");
 const geoip = require("geoip-lite");
 const geolib = require("geolib");
@@ -52,7 +51,6 @@ const studentRegister = async (req, res) => {
 };
 
 // teacher register
-
 const teacherRegister = async (req, res) => {
     const { firstName, lastName, email, password, confPassword } = req.body;
     if (password != confPassword) {
@@ -220,7 +218,7 @@ const markData = async (req, res) => {
     // console.log(checkRollNo);
     if (checkRollNo) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-            msg: "You are already Marked !!",
+            msg: "You already Marked !!",
         });
     }
 
@@ -244,51 +242,19 @@ const markData = async (req, res) => {
     //     });
     // }
 
-    // const distance = calculateDistance(
-    //     presentSession.latitude,
-    //     presentSession.longitude,
-    //     studentLat,
-    //     studentLon
-    // );
-    // console.log(distance);
-    // // const height = abs(studentAlt - presentSession.altitude);
+    const location1 = {
+        latitude: presentSession.latitude,
+        longitude: presentSession.longitude,
+    };
 
-    // if (distance > 25) {
-    //     return res
-    //         .status(StatusCodes.BAD_REQUEST)
-    //         .send({ msg: "You are not in range!!!" });
-    // }
-
-    const locationRange = getLocationRangeWithinRadius(
-        presentSession.latitude,
-        presentSession.longitude,
-        40
-    );
-
-    const latMin = locationRange.latitudeRange[0];
-    const latMax = locationRange.latitudeRange[1];
-
-    const longMin = locationRange.longitudeRange[0];
-    const longMax = locationRange.longitudeRange[1];
-
-    console.log("Student location");
-    console.log(studentLat, " ", studentLon);
-    console.log("Expected to be in range");
-    console.log(locationRange.latitudeRange);
-    console.log(locationRange.longitudeRange);
-
-    if (
-        !(
-            studentLat <= latMax &&
-            studentLat >= latMin &&
-            studentLon <= longMax &&
-            studentLon >= longMin
-        )
-    ) {
-        return res
-            .status(StatusCodes.BAD_REQUEST)
-            .send({ msg: "You are not in range!!!" });
-    }
+    const location2 = {
+        latitude: studentLat,
+        longitude: studentLon,
+    };
+    // Calculate the distance between the two locations in meters
+    // const distanceInMeters = geolib.getDistance(location1, location2);
+    console.log(location1, "  ", location2);
+    // console.log('Distance between the two locations:', distanceInMeters, 'km');
 
     if (
         user.div != presentSession.div ||
@@ -325,62 +291,6 @@ const markData = async (req, res) => {
     });
     console.log("end of markData");
 };
-
-function getLocationRangeWithinRadius(latitude, longitude, radiusInMeters) {
-    const centerPoint = { latitude, longitude };
-
-    // Calculate points on the circumference of the circle
-    const northPoint = geolib.computeDestinationPoint(
-        centerPoint,
-        radiusInMeters,
-        0
-    );
-    const southPoint = geolib.computeDestinationPoint(
-        centerPoint,
-        radiusInMeters,
-        180
-    );
-    const eastPoint = geolib.computeDestinationPoint(
-        centerPoint,
-        radiusInMeters,
-        90
-    );
-    const westPoint = geolib.computeDestinationPoint(
-        centerPoint,
-        radiusInMeters,
-        270
-    );
-
-    // Extract latitude and longitude ranges
-    const latitudeRange = [southPoint.latitude, northPoint.latitude];
-    const longitudeRange = [westPoint.longitude, eastPoint.longitude];
-
-    // Return the latitude and longitude ranges as an object
-    return {
-        latitudeRange,
-        longitudeRange,
-    };
-}
-
-// Function to calculate distance between two points using Haversine formula
-// function calculateDistance(lat1, lon1, lat2, lon2) {
-//     console.log(lat1, " ", lon1, " ", lat2, " ", lon2);
-//     var R = 6371; // Radius of the earth in km
-//     var dLat = deg2rad(lat2 - lat1);
-//     var dLon = deg2rad(lon2 - lon1);
-//     var a =
-//         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-//         Math.cos(deg2rad(lat1)) *
-//             Math.cos(deg2rad(lat2)) *
-//             Math.sin(dLon / 2) *
-//             Math.sin(dLon / 2);
-//     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//     var d = R * c; // Distance in km
-//     return d;
-// }
-// function deg2rad(deg) {
-//     return deg * (Math.PI / 180);
-// }
 
 const deleteSession = async (req, res) => {
     const base = req.params.base;
