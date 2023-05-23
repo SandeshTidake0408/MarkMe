@@ -261,7 +261,7 @@ const markData = async (req, res) => {
     const sl2 = roundToFourDecimals(location2.longitude);
 
     if (!inArea(tl1, tl2, sl1, sl2)) {
-        res.status(StatusCodes.BAD_REQUEST).json({
+        return res.status(StatusCodes.BAD_REQUEST).json({
             msg: "Ooop's You are not in range!!!",
         });
     }
