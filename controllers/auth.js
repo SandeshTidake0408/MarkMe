@@ -215,7 +215,7 @@ const markData = async (req, res) => {
         base: base,
         folder: { $elemMatch: { rollNo: user.rollNo } },
     });
-    // console.log(checkRollNo);
+    console.log(checkRollNo);
     if (checkRollNo) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             msg: "You already Marked !!",
@@ -227,6 +227,7 @@ const markData = async (req, res) => {
         deviceIdArray: { $elemMatch: { deviceId: deviceId } },
     });
 
+    const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     const geo = geoip.lookup(clientIP);
 
     // Check if the IP is outside India
@@ -241,8 +242,6 @@ const markData = async (req, res) => {
             // msg: "Na Munna Na Tu toh apane .....!!! MarkMe is 👀 you",
         });
     }
-
-    
 
     if (
         user.div != presentSession.div ||
