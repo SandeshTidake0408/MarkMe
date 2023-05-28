@@ -251,6 +251,14 @@ const markData = async (req, res) => {
             .status(StatusCodes.BAD_REQUEST)
             .json({ msg: "Student not belong to same class" });
     }
+
+    const userWithinRadius = isWithinRadius(presentSession.latitude,  presentSession.longitude, studentLat, studentLon, 100);
+    console.log(userWithinRadius); // true or false
+
+    // if(userWithinRadius==false){
+    //    return res.status(StatusCodes.BAD_REQUEST).json({msg:"You are not in range !!!"})
+    // }
+
     const result = await Session.updateOne(
         { base },
         {
@@ -278,6 +286,35 @@ const markData = async (req, res) => {
     });
     console.log("end of markData");
 };
+
+
+//Auxillary functions for location
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const earthRadius = 6371e3; // Earth's radius in meters
+    const phi1 = degToRad(lat1);
+    const phi2 = degToRad(lat2);
+    const deltaPhi = degToRad(lat2 - lat1);
+    const deltaLambda = degToRad(lon2 - lon1);
+  
+    const a =
+      Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+      Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = earthRadius * c;
+  
+    return distance;
+  }
+  
+function degToRad(degrees) {
+    return degrees * (Math.PI / 180);
+}
+  
+function isWithinRadius(myLat, myLon, userLat, userLon, radiusInFeet) {
+  const radiusInMeters = radiusInFeet * 0.3048; // Convert feet to meters
+  const distance = calculateDistance(myLat, myLon, userLat, userLon);
+  return distance <= radiusInMeters;
+}
+  
 
 const deleteSession = async (req, res) => {
     const base = req.params.base;
