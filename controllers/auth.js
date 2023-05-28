@@ -215,7 +215,7 @@ const markData = async (req, res) => {
         base: base,
         folder: { $elemMatch: { rollNo: user.rollNo } },
     });
-    console.log(checkRollNo);
+    // console.log(checkRollNo);
     if (checkRollNo) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             msg: "You already Marked !!",
@@ -227,14 +227,14 @@ const markData = async (req, res) => {
         deviceIdArray: { $elemMatch: { deviceId: deviceId } },
     });
 
-    const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const geo = geoip.lookup(clientIP);
+    // const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    // const geo = geoip.lookup(clientIP);
 
-    // Check if the IP is outside India
-    if (geo && geo.country !== "IN") {
-        // IP is outside India, block the request
-        return res.status(403).send("Access denied. IP address outside India.");
-    }
+    // // Check if the IP is outside India
+    // if (geo && geo.country !== "IN") {
+    //     // IP is outside India, block the request
+    //     return res.status(403).send("Access denied. IP address outside India.");
+    // }
     console.log(ip);
     if (ip) {
         return res.status(StatusCodes.CONFLICT).json({
@@ -293,6 +293,29 @@ const deleteSession = async (req, res) => {
     res.status(200).json({ msg: "Session deleted Successfully" });
 };
 
+// Ending the session at any time
+const stopSession = async (req, res)=>{
+    const base = req.params.base;
+    const {endTime , subject} = req.body;
+    
+    const presentSession = await Session.findOne({subject , base} )
+    
+    if(!presentSession){
+        return res.status(StatusCodes.BAD_REQUEST).json({ msg :"Unable to find session"});
+    }
+
+    const result = await Session.updateOne(
+        {base} ,
+        {endTime : endTime}  
+    )
+
+    if(!result.nModified){
+       return res.status(StatusCodes.BAD_REQUEST).json({msg:"Oop's something went wrong!!!"});
+    }
+
+    res.status(StatusCodes.OK).json({msg:"Session Stoped " , presentSession})
+}
+
 const downloadSheet = async (req, res) => {
     const base = req.params.base;
 
@@ -310,6 +333,7 @@ module.exports = {
     generateSession,
     markData,
     deleteSession,
+    stopSession,
     downloadSheet,
     feedTimer,
 };
