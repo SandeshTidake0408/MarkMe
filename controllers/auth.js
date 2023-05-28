@@ -215,7 +215,7 @@ const markData = async (req, res) => {
         base: base,
         folder: { $elemMatch: { rollNo: user.rollNo } },
     });
-    console.log(checkRollNo);
+    // console.log(checkRollNo);
     if (checkRollNo) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             msg: "You already Marked !!",
@@ -227,14 +227,14 @@ const markData = async (req, res) => {
         deviceIdArray: { $elemMatch: { deviceId: deviceId } },
     });
 
-    const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    const geo = geoip.lookup(clientIP);
+    // const clientIP = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    // const geo = geoip.lookup(clientIP);
 
-    // Check if the IP is outside India
-    if (geo && geo.country !== "IN") {
-        // IP is outside India, block the request
-        return res.status(403).send("Access denied. IP address outside India.");
-    }
+    // // Check if the IP is outside India
+    // if (geo && geo.country !== "IN") {
+    //     // IP is outside India, block the request
+    //     return res.status(403).send("Access denied. IP address outside India.");
+    // }
     console.log(ip);
     if (ip) {
         return res.status(StatusCodes.CONFLICT).json({
@@ -251,6 +251,14 @@ const markData = async (req, res) => {
             .status(StatusCodes.BAD_REQUEST)
             .json({ msg: "Student not belong to same class" });
     }
+
+    const userWithinRadius = isWithinRadius(presentSession.latitude,  presentSession.longitude, studentLat, studentLon, 100);
+    console.log(userWithinRadius); // true or false
+
+    // if(userWithinRadius==false){
+    //    return res.status(StatusCodes.BAD_REQUEST).json({msg:"You are not in range !!!"})
+    // }
+
     const result = await Session.updateOne(
         { base },
         {
@@ -279,6 +287,35 @@ const markData = async (req, res) => {
     console.log("end of markData");
 };
 
+
+//Auxillary functions for location
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    const earthRadius = 6371e3; // Earth's radius in meters
+    const phi1 = degToRad(lat1);
+    const phi2 = degToRad(lat2);
+    const deltaPhi = degToRad(lat2 - lat1);
+    const deltaLambda = degToRad(lon2 - lon1);
+  
+    const a =
+      Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+      Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = earthRadius * c;
+  
+    return distance;
+  }
+  
+function degToRad(degrees) {
+    return degrees * (Math.PI / 180);
+}
+  
+function isWithinRadius(myLat, myLon, userLat, userLon, radiusInFeet) {
+  const radiusInMeters = radiusInFeet * 0.3048; // Convert feet to meters
+  const distance = calculateDistance(myLat, myLon, userLat, userLon);
+  return distance <= radiusInMeters;
+}
+  
+
 const deleteSession = async (req, res) => {
     const base = req.params.base;
     const { email } = req.body;
@@ -292,6 +329,29 @@ const deleteSession = async (req, res) => {
     }
     res.status(200).json({ msg: "Session deleted Successfully" });
 };
+
+// Ending the session at any time
+const stopSession = async (req, res)=>{
+    const base = req.params.base;
+    const {endTime , subject} = req.body;
+    
+    const presentSession = await Session.findOne({subject , base} )
+    
+    if(!presentSession){
+        return res.status(StatusCodes.BAD_REQUEST).json({ msg :"Unable to find session"});
+    }
+
+    const result = await Session.updateOne(
+        {base} ,
+        {endTime : endTime}  
+    )
+
+    if(!result.nModified){
+       return res.status(StatusCodes.BAD_REQUEST).json({msg:"Oop's something went wrong!!!"});
+    }
+
+    res.status(StatusCodes.OK).json({msg:"Session Stoped " , presentSession})
+}
 
 const downloadSheet = async (req, res) => {
     const base = req.params.base;
@@ -310,6 +370,7 @@ module.exports = {
     generateSession,
     markData,
     deleteSession,
+    stopSession,
     downloadSheet,
     feedTimer,
 };

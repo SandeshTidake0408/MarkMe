@@ -8,6 +8,7 @@ const {
     generateSession,
     markData,
     deleteSession,
+    stopSession,
     downloadSheet,
     feedTimer,
 } = require("../controllers/auth");
@@ -19,6 +20,7 @@ router.get("/feed/:email", feedData);
 router.post("/generate/session", generateSession);
 router.post("/mark", markData);
 router.post("/delete/:base", deleteSession);
+router.post("/stop/:base", stopSession);
 router.post("/download/:base", downloadSheet);
 router.get("/feed/timer/:base", feedTimer);
 
