@@ -173,7 +173,6 @@ const generateSession = async (req, res) => {
             folder: [],
             latitude,
             longitude,
-            // xl,
             endTime,
         });
         res.status(StatusCodes.CREATED).json({
@@ -238,7 +237,7 @@ const markData = async (req, res) => {
     console.log(ip);
     if (ip) {
         return res.status(StatusCodes.CONFLICT).json({
-            msg:"Don't ever try too cheat! MarkMe is watching 👀 you",
+            msg: "Don't ever try too cheat! MarkMe is watching 👀 you",
             // msg: "Na Munna Na Tu toh apane .....!!! MarkMe is 👀 you",
         });
     }
@@ -252,7 +251,13 @@ const markData = async (req, res) => {
             .json({ msg: "Student not belong to same class" });
     }
 
-    const userWithinRadius = isWithinRadius(presentSession.latitude,  presentSession.longitude, studentLat, studentLon, 100);
+    const userWithinRadius = isWithinRadius(
+        presentSession.latitude,
+        presentSession.longitude,
+        studentLat,
+        studentLon,
+        100
+    );
     console.log(userWithinRadius); // true or false
 
     // if(userWithinRadius==false){
@@ -287,7 +292,6 @@ const markData = async (req, res) => {
     console.log("end of markData");
 };
 
-
 //Auxillary functions for location
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const earthRadius = 6371e3; // Earth's radius in meters
@@ -295,26 +299,28 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     const phi2 = degToRad(lat2);
     const deltaPhi = degToRad(lat2 - lat1);
     const deltaLambda = degToRad(lon2 - lon1);
-  
+
     const a =
-      Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
-      Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2);
+        Math.sin(deltaPhi / 2) * Math.sin(deltaPhi / 2) +
+        Math.cos(phi1) *
+            Math.cos(phi2) *
+            Math.sin(deltaLambda / 2) *
+            Math.sin(deltaLambda / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = earthRadius * c;
-  
+
     return distance;
-  }
-  
+}
+
 function degToRad(degrees) {
     return degrees * (Math.PI / 180);
 }
-  
+
 function isWithinRadius(myLat, myLon, userLat, userLon, radiusInFeet) {
-  const radiusInMeters = radiusInFeet * 0.3048; // Convert feet to meters
-  const distance = calculateDistance(myLat, myLon, userLat, userLon);
-  return distance <= radiusInMeters;
+    const radiusInMeters = radiusInFeet * 0.3048; // Convert feet to meters
+    const distance = calculateDistance(myLat, myLon, userLat, userLon);
+    return distance <= radiusInMeters;
 }
-  
 
 const deleteSession = async (req, res) => {
     const base = req.params.base;
@@ -331,27 +337,28 @@ const deleteSession = async (req, res) => {
 };
 
 // Ending the session at any time
-const stopSession = async (req, res)=>{
+const stopSession = async (req, res) => {
     const base = req.params.base;
-    const {endTime , subject} = req.body;
-    
-    const presentSession = await Session.findOne({subject , base} )
-    
-    if(!presentSession){
-        return res.status(StatusCodes.BAD_REQUEST).json({ msg :"Unable to find session"});
+    const { endTime, subject } = req.body;
+
+    const presentSession = await Session.findOne({ subject, base });
+
+    if (!presentSession) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ msg: "Unable to find session" });
     }
 
-    const result = await Session.updateOne(
-        {base} ,
-        {endTime : endTime}  
-    )
+    const result = await Session.updateOne({ base }, { endTime: endTime });
 
-    if(!result.nModified){
-       return res.status(StatusCodes.BAD_REQUEST).json({msg:"Oop's something went wrong!!!"});
+    if (!result.nModified) {
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ msg: "Oop's something went wrong!!!" });
     }
 
-    res.status(StatusCodes.OK).json({msg:"Session Stoped " , presentSession})
-}
+    res.status(StatusCodes.OK).json({ msg: "Session Stoped ", presentSession });
+};
 
 const downloadSheet = async (req, res) => {
     const base = req.params.base;
