@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const {
-    studentRegister,
-    teacherRegister,
-    login,
-    feedData,
-    generateSession,
-    markData,
-    deleteSession,
-    stopSession,
-    downloadSheet,
-    feedTimer,
+	studentRegister,
+	teacherRegister,
+	login,
+	feedData,
+	generateSession,
+	markData,
+	deleteSession,
+	stopSession,
+	downloadSheet,
+	feedTimer,
 } = require("../controllers/auth");
 
 router.post("/auth/register/student", studentRegister);

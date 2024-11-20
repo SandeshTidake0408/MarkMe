@@ -13,29 +13,26 @@ const regRouter = require("./routes/auth");
 app.use(cors());
 
 // middleware
-app.use(express.static('./public'))
+app.use(express.static("./public"));
 app.use(express.json());
 
 //route
 app.get("/hello", (req, res) => {
-  res.send("Welcome to markme");
+	res.send("Welcome to markme");
 });
 
 app.use("/api/v1", regRouter);
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT ||4000 ;
+const port = process.env.PORT || 4000;
 
-const start = async () => {
-  try {
-    await connectDB(process.env.MONGO_URI);
-    app.listen(port, () => {
-      console.log(`listening on port ${port}....`);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-start();
+connectDB()
+	.then((res) => {
+		app.listen(port, () => {
+			console.log(`Server is running on port : ${process.env.PORT}`);
+		});
+	})
+	.catch((error) => {
+		console.log("MONGODB Connection fail !! ", error);
+	});
