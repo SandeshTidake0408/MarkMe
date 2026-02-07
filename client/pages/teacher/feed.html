@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - MarkMe</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/logo.svg" />
+    <link rel="stylesheet" href="../../styles/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="nav_bar">
+            <div class="logo"></div>
+            <ul class="main_nav">
+                <li class="main_nav_item"><a href="../../index.html">Home</a></li>
+                <li class="main_nav_item"><a href="../../index.html#about">About</a></li>
+                <li class="main_nav_item"><a href="../../index.html#contact">Contact</a></li>
+            </ul>
+            <ul class="side_nav">
+                <li class="side_nav_item">
+                    <div class="profile"></div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="profile_info">
+        <p>Name: <span class="user_name">-</span></p>
+        <p>Email: <span class="mail">-</span></p>
+        <p>Type: <span class="user_type">-</span></p>
+        <button class="btn btn-danger" onclick="SignOut()">Sign Out</button>
+    </div>
+
+    <main class="container" style="padding: var(--spacing-xl);">
+        <div class="card" style="max-width: 700px; margin: 0 auto;">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-lg);">Create Attendance Session</h2>
+            
+            <p class="message" id="message"></p>
+
+            <form onsubmit="submitHandler(event)">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <select id="year" required>
+                            <option value="" disabled selected>Select Year</option>
+                            <option value="se">SE</option>
+                            <option value="fe">FE</option>
+                            <option value="te">TE</option>
+                            <option value="be">BE</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="branch">Branch</label>
+                        <select id="branch" required>
+                            <option value="" disabled selected>Select Branch</option>
+                            <option value="Computer">Computer</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="E&TC">E&TC</option>
+                            <option value="Civil">Civil</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" required>
+                            <option value="" disabled selected>Select Subject</option>
+                            <option value="dsa">DSA</option>
+                            <option value="ppl">PPL</option>
+                            <option value="em">M3</option>
+                            <option value="mp">MP</option>
+                            <option value="se">SE</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="div">Division</label>
+                        <select id="div" required>
+                            <option value="" disabled selected>Select Division</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="background-color: var(--bg-tertiary); padding: var(--spacing-lg); border-radius: var(--radius-lg); margin-bottom: var(--spacing-lg);">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); flex-wrap: wrap;">
+                        <div style="flex: 1;">
+                            <label style="margin-bottom: var(--spacing-sm);">Attendance Code</label>
+                            <div style="font-size: 2rem; font-weight: 600; color: var(--primary); text-align: center; padding: var(--spacing-md); background: white; border-radius: var(--radius); border: 2px solid var(--border);" id="code">0000</div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" onclick="randomNum()" style="align-self: flex-end;">
+                            Generate Code
+                        </button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn" style="width: 100%;" onclick="createPost()">
+                    Create Session
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script type="module" src="../../utils/constants.js"></script>
+    <script type="module" src="../../config/app.js"></script>
+    <script type="module" src="../../services/api.js"></script>
+    <script src="../../utils/sharedFeed.js"></script>
+    <script type="module" src="../../utils/helpers.js"></script>
+    <script type="module" src="./feed.js"></script>
+</body>
+</html>

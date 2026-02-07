@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - MarkMe</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/logo.svg" />
+    <link rel="stylesheet" href="../../styles/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="nav_bar">
+            <div class="logo"></div>
+            <ul class="main_nav">
+                <li class="main_nav_item"><a href="../../index.html">Home</a></li>
+                <li class="main_nav_item"><a href="../../index.html#about">About</a></li>
+                <li class="main_nav_item"><a href="../../index.html#contact">Contact</a></li>
+            </ul>
+            <ul class="side_nav">
+                <li class="side_nav_item">
+                    <div class="profile"></div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="profile_info">
+        <p>Name: <span class="user_name">-</span></p>
+        <p>Email: <span class="mail">-</span></p>
+        <p>Type: <span class="user_type">-</span></p>
+        <p>Branch: <span class="branch">-</span></p>
+        <p>Division: <span class="Div">-</span></p>
+        <p>Roll No: <span class="roll_no">-</span></p>
+        <button class="btn btn-danger" onclick="SignOut()">Sign Out</button>
+    </div>
+
+    <main class="container" style="padding: var(--spacing-xl);">
+        <div class="card" style="max-width: 600px; margin: 0 auto;">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-lg);">Mark Your Attendance</h2>
+            
+            <p class="message" id="message"></p>
+
+            <form id="myForm" onsubmit="submitHandler(event)">
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" required>
+                        <option value="" disabled selected>Select Subject</option>
+                        <option value="dsa">DSA</option>
+                        <option value="ppl">PPL</option>
+                        <option value="em">M3</option>
+                        <option value="mp">MP</option>
+                        <option value="se">SE</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="code">Attendance Code</label>
+                    <input type="text" id="code" placeholder="Enter the code provided by teacher" required>
+                </div>
+
+                <button type="button" class="btn" style="width: 100%;" id="markme">
+                    Mark Attendance
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script type="module" src="../../utils/constants.js"></script>
+    <script type="module" src="../../config/app.js"></script>
+    <script type="module" src="../../services/api.js"></script>
+    <script src="../../utils/sharedFeed.js"></script>
+    <script type="module" src="../../utils/helpers.js"></script>
+    <script type="module" src="./feed.js"></script>
+</body>
+</html>

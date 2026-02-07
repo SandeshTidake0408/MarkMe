@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Management - MarkMe</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/logo.svg" />
+    <link rel="stylesheet" href="../../styles/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <style>
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+        .stat-card h3 {
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: var(--spacing-sm);
+            opacity: 0.9;
+        }
+        .stat-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav_bar">
+            <div class="logo"></div>
+            <ul class="main_nav">
+                <li class="main_nav_item"><a href="../../index.html">Home</a></li>
+                <li class="main_nav_item"><a href="../../index.html#about">About</a></li>
+                <li class="main_nav_item"><a href="../../index.html#contact">Contact</a></li>
+            </ul>
+            <ul class="side_nav">
+                <li class="side_nav_item">
+                    <div class="profile"></div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="profile_info">
+        <p>Name: <span class="user_name">-</span></p>
+        <p>Email: <span class="mail">-</span></p>
+        <p>Type: <span class="user_type">-</span></p>
+        <button class="btn btn-danger" onclick="SignOut()">Sign Out</button>
+    </div>
+
+    <main class="container" style="padding: var(--spacing-xl);">
+        <p class="message" id="message"></p>
+
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Session Management</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Time Remaining</h3>
+                    <p class="value" id="timer">00:00</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary) 0%, #34d399 100%);">
+                    <h3>Attendance Count</h3>
+                    <p class="value" id="count">00</p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-lg); flex-wrap: wrap;">
+                <button class="btn btn-secondary" id="stop_btn" style="flex: 1; min-width: 150px;">
+                    Stop Session
+                </button>
+                <button class="btn btn-danger" onclick="Cancel()" style="flex: 1; min-width: 150px;">
+                    Cancel Session
+                </button>
+            </div>
+
+            <a href="" id="download_btn" class="btn" style="width: 100%; display: block; text-align: center; pointer-events: none; opacity: 0.5;" download>
+                Download Attendance Sheet
+            </a>
+        </div>
+    </main>
+
+    <script type="module" src="../../utils/constants.js"></script>
+    <script type="module" src="../../config/app.js"></script>
+    <script type="module" src="../../services/api.js"></script>
+    <script src="../../utils/sharedFeed.js"></script>
+    <script type="module" src="../../utils/helpers.js"></script>
+    <script type="module" src="./session.js"></script>
+</body>
+</html>

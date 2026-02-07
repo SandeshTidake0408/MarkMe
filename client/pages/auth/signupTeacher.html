@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Teacher - MarkMe</title>
+    <link rel="icon" type="image/svg+xml" href="../../assets/images/logo.svg" />
+    <link rel="stylesheet" href="../../styles/theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .signup-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        .form-section {
+            background-color: var(--bg-tertiary);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+        }
+        .form-section h3 {
+            margin-bottom: var(--spacing-lg);
+            color: var(--primary);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="backdrop"></div>
+    
+    <header>
+        <nav class="nav_bar">
+            <div class="logo"></div>
+            <ul class="main_nav">
+                <li class="main_nav_item"><a href="../../index.html">Home</a></li>
+                <li class="main_nav_item"><a href="../../index.html#about">About</a></li>
+                <li class="main_nav_item"><a href="../../index.html#contact">Contact</a></li>
+            </ul>
+            <ul class="side_nav">
+                <li class="side_nav_item"><a href="login.html">Login</a></li>
+                <li class="side_nav_item" id="sign_up_button"><a>Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="options">
+        <a href="signupTeacher.html">Teacher</a>
+        <a href="signup.html">Student</a>
+    </div>
+
+    <main style="min-height: calc(100vh - 200px); padding: var(--spacing-xl);">
+        <div class="signup-container">
+            <div class="card">
+                <h1 style="text-align: center; margin-bottom: var(--spacing-sm);">Create Teacher Account</h1>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: var(--spacing-xl);">
+                    Already have an account? <a href="login.html" style="color: var(--primary); font-weight: 500;">Sign in</a>
+                </p>
+
+                <p class="message" id="message"></p>
+
+                <form onsubmit="submitHandler(event)">
+                    <div class="form-grid">
+                        <div class="form-section">
+                            <h3>Personal Information</h3>
+                            <div class="form-group">
+                                <label for="name">First Name</label>
+                                <input type="text" id="name" placeholder="Enter first name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="l_name">Last Name</label>
+                                <input type="text" id="l_name" placeholder="Enter last name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="m_no">Mobile Number</label>
+                                <input type="tel" id="m_no" placeholder="Enter mobile number" required>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Login Credentials</h3>
+                            <div class="form-group">
+                                <label for="mail">Email Address</label>
+                                <input type="email" id="mail" placeholder="Enter email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="pass">Password</label>
+                                <input type="password" id="pass" placeholder="Create password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="c_pass">Confirm Password</label>
+                                <input type="password" id="c_pass" placeholder="Confirm password" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn" style="width: 100%;" onclick="handelRegister()">
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="../../utils/constants.js"></script>
+    <script type="module" src="../../config/app.js"></script>
+    <script type="module" src="../../services/api.js"></script>
+    <script src="../../utils/shared.js"></script>
+    <script type="module" src="../../utils/helpers.js"></script>
+    <script src="./signupTeacher.js"></script>
+</body>
+</html>
