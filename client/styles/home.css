@@ -97,7 +97,7 @@
     color: var(--primary);
     font-size: 1.125rem;
     padding: 1rem 2rem;
-    border-radius: var(--radius-lg);
+    border-radius: 6px;
     display: inline-block;
     text-decoration: none;
     font-weight: 600;

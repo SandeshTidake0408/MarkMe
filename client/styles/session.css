@@ -94,6 +94,36 @@
     font-weight: 500;
 }
 
+/* Dialog Styles */
+#cancelDialog {
+    border: none;
+    border-radius: 6px;
+    padding: 16px 24px;
+    box-shadow: var(--shadow-lg);
+    max-width: 90%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+#cancelDialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+#cancelDialog h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+}
+
+#cancelDialog p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .session-container {
@@ -109,6 +139,22 @@
     }
 
     .session-actions .btn {
+        width: 100%;
+    }
+    
+    #cancelDialog {
+        max-width: 95%;
+    }
+    
+    #cancelDialog div {
+        padding: var(--spacing-lg);
+    }
+    
+    #cancelDialog div > div {
+        flex-direction: column;
+    }
+    
+    #cancelDialog div > div .btn {
         width: 100%;
     }
 }

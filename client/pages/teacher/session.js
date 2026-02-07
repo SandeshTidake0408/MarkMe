@@ -62,25 +62,77 @@ function loadSessionInfo() {
 user_data();
 loadSessionInfo();
  
+// Show cancel confirmation dialog
+function showCancelDialog() {
+	const dialog = document.getElementById("cancelDialog");
+	if (dialog) {
+		dialog.showModal();
+	}
+}
+
+// Actually cancel the session
 async function Cancel() {
 	try {
 		const res = await api.post(`/delete/${id}`, {
 			email: user,
 		});
 		const data = res.data;
+		
+		// Close dialog
+		const dialog = document.getElementById("cancelDialog");
+		if (dialog) {
+			dialog.close();
+		}
+		
 		const messageEl = document.getElementById("message");
 		messageEl.className = "message success";
 		messageEl.textContent = data.msg;
+		
+		// Clear the timer interval if it exists
+		if (timerIntervalId) {
+			clearInterval(timerIntervalId);
+			timerIntervalId = null;
+		}
+		
+		// Reset timer display
+		if (timerElement) {
+			timerElement.textContent = "00:00";
+		}
+		
+		// Disable stop button
+		if (stopButton) {
+			stopButton.disabled = true;
+		}
+		
+		// Redirect to feed page after a short delay
+		setTimeout(() => {
+			const email = getQueryParam("name");
+			window.location.href = `feed.html?name=${encodeURIComponent(email)}`;
+		}, 1500);
 	} catch (err) {
+		// Close dialog on error
+		const dialog = document.getElementById("cancelDialog");
+		if (dialog) {
+			dialog.close();
+		}
+		
 		const messageEl = document.getElementById("message");
 		messageEl.className = "message error";
 		messageEl.textContent = err.response?.data?.msg || err.message || "Failed to cancel session";
 	}
 }
 
+// Store timer interval ID globally so we can clear it
+var timerIntervalId = null;
+
 //timer
 function startTimer(endTime) {
-	var intervalId = setInterval(function () {
+	// Clear any existing timer
+	if (timerIntervalId) {
+		clearInterval(timerIntervalId);
+	}
+	
+	timerIntervalId = setInterval(function () {
 		var currentTime = new Date().getTime();
 		var remainingTime = endTime - currentTime;
 
@@ -96,7 +148,8 @@ function startTimer(endTime) {
 		}
 
 		if (remainingTime <= 0) {
-			clearInterval(intervalId);
+			clearInterval(timerIntervalId);
+			timerIntervalId = null;
 			console.log("Timer has ended!");
 			sheet_download();
 		}
@@ -123,6 +176,13 @@ async function stop_session() {
 			endTime: server_time,
 			subject: sessionSubject,
 		});
+		
+		// Clear the timer interval
+		if (timerIntervalId) {
+			clearInterval(timerIntervalId);
+			timerIntervalId = null;
+		}
+		
 		const messageEl = document.getElementById("message");
 		messageEl.className = "message success";
 		messageEl.textContent = res.data.msg;
@@ -179,7 +239,33 @@ function initEventListeners() {
 	
 	const cancelBtn = document.getElementById("cancelBtn");
 	if (cancelBtn) {
-		cancelBtn.addEventListener("click", Cancel);
+		cancelBtn.addEventListener("click", showCancelDialog);
+	}
+	
+	// Dialog buttons
+	const cancelDialog = document.getElementById("cancelDialog");
+	const cancelDialogConfirm = document.getElementById("cancelDialogConfirm");
+	const cancelDialogCancel = document.getElementById("cancelDialogCancel");
+	
+	if (cancelDialogConfirm) {
+		cancelDialogConfirm.addEventListener("click", Cancel);
+	}
+	
+	if (cancelDialogCancel) {
+		cancelDialogCancel.addEventListener("click", () => {
+			if (cancelDialog) {
+				cancelDialog.close();
+			}
+		});
+	}
+	
+	// Close dialog when clicking outside
+	if (cancelDialog) {
+		cancelDialog.addEventListener("click", (e) => {
+			if (e.target === cancelDialog) {
+				cancelDialog.close();
+			}
+		});
 	}
 	
 	const profileSignOutBtn = document.getElementById("profileSignOutBtn");

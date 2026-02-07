@@ -77,11 +77,36 @@ const Div = document.getElementById("div");
 const Message = document.querySelector(".message");
 var id;
 async function createPost() {
+	// Validate all required fields
+	if (!Year.value || !Branch.value || !Subject.value || !Div.value) {
+		const messageEl = document.getElementById("message");
+		messageEl.className = "message error";
+		messageEl.textContent = "Please fill in all required fields";
+		return;
+	}
+	
+	// Validate that code has been generated
+	if (!num || num === 0) {
+		const messageEl = document.getElementById("message");
+		messageEl.className = "message error";
+		messageEl.textContent = "Please generate an attendance code first";
+		return;
+	}
+	
 	const year = Year.value;
 	const branch = Branch.value;
-	const sub = Subject.value;
+	const sub = Subject.value.trim();
 	const div = Div.value;
 	const code = num;
+	
+	// Validate subject is not empty after trim
+	if (!sub) {
+		const messageEl = document.getElementById("message");
+		messageEl.className = "message error";
+		messageEl.textContent = "Please enter a valid subject name";
+		return;
+	}
+	
 	console.log(num);
 	id = `${sub}_${code}`;
 	// console.log("id--", id);
