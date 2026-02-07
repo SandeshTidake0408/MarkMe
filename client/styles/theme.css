@@ -67,7 +67,7 @@ body {
   font-family: var(--font-sans);
   color: var(--text-primary);
   background-color: var(--bg-secondary);
-  line-height: 1.6;
+  line-height: 1.2;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -75,7 +75,6 @@ body {
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
-  line-height: 1.2;
   color: var(--text-primary);
 }
 
