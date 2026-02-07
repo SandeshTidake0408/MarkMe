@@ -1,12 +1,12 @@
 import api from "../../services/api.js";
+import { getQueryParam } from "../../utils/helpers.js";
 
-const url_user = new URLSearchParams(window.location.search);
 const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
 
 async function user_data() {
-	const email = url_user.get("name");
+	const email = getQueryParam("name");
 	console.log(email);
 	try {
 		const res = await api.get(`/feed/${email}`);
@@ -27,7 +27,7 @@ let num = 0;
 function randomNum() {
 	num = Math.floor(Math.random() * 10000);
 	console.log(num);
-	CODE.textContent = num;
+	CODE.textContent = num.toString().padStart(4, '0');
 }
 
 function submitHandler(event) {
@@ -102,10 +102,9 @@ async function createPost() {
 		messageEl.textContent = data.msg;
 		console.log(data);
 		setTimeout(() => {
-			const email = url_user.get("name");
-			var url = `session.html?name=${encodeURIComponent(
-				email
-			)}&id=${encodeURIComponent(id)}`;
+			const email = getQueryParam("name");
+			// Pass all session data as URL parameters - keep subject and code separate
+			var url = `session.html?name=${encodeURIComponent(email)}&id=${encodeURIComponent(id)}&subject=${encodeURIComponent(sub)}&code=${encodeURIComponent(code)}&year=${encodeURIComponent(year)}&branch=${encodeURIComponent(branch)}&div=${encodeURIComponent(div)}`;
 			window.location.href = url;
 		}, 1000);
 	} catch (err) {
@@ -114,3 +113,27 @@ async function createPost() {
 		messageEl.textContent = err.response?.data?.msg || err.message;
 	}
 }
+
+// Set up event listeners when DOM is ready
+function initEventListeners() {
+	const generateCodeBtn = document.getElementById('generateCodeBtn');
+	const createSessionBtn = document.getElementById('createSessionBtn');
+	
+	if (generateCodeBtn) {
+		generateCodeBtn.addEventListener('click', randomNum);
+	}
+	
+	if (createSessionBtn) {
+		createSessionBtn.addEventListener('click', createPost);
+	}
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', initEventListeners);
+} else {
+	initEventListeners();
+}
+
+// Export functions for potential reuse
+export { randomNum, createPost };

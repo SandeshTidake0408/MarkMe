@@ -4,42 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Session Management - MarkMe</title>
+    <title>Session - MarkMe</title>
     <link rel="icon" type="image/svg+xml" href="../../assets/images/logo.svg" />
     <link rel="stylesheet" href="../../styles/theme.css">
+    <link rel="stylesheet" href="../../styles/session.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-    <style>
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--spacing-lg);
-            margin-bottom: var(--spacing-xl);
-        }
-        .stat-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            padding: var(--spacing-xl);
-            border-radius: var(--radius-lg);
-            text-align: center;
-        }
-        .stat-card h3 {
-            color: white;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: var(--spacing-sm);
-            opacity: 0.9;
-        }
-        .stat-card .value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin: 0;
-        }
-    </style>
+    <script>
+        // Make XLSX available globally
+        window.XLSX = XLSX;
+    </script>
 </head>
 <body>
+    <div class="backdrop"></div>
+    
     <header>
         <nav class="nav_bar">
             <div class="logo"></div>
@@ -56,42 +36,65 @@
         </nav>
     </header>
 
-    <div class="profile_info">
-        <p>Name: <span class="user_name">-</span></p>
-        <p>Email: <span class="mail">-</span></p>
-        <p>Type: <span class="user_type">-</span></p>
-        <button class="btn btn-danger" onclick="SignOut()">Sign Out</button>
+    <div class="profile_info" id="profile_info">
+        <p><span>Name:</span> <span class="user_name"></span></p>
+        <p><span>Email:</span> <span class="mail"></span></p>
+        <p><span>Type:</span> <span class="user_type"></span></p>
+        <button class="btn btn-danger" id="profileSignOutBtn">Sign Out</button>
     </div>
 
-    <main class="container" style="padding: var(--spacing-xl);">
-        <p class="message" id="message"></p>
+    <main>
+        <div class="session-container">
+            <p class="message" id="message"></p>
 
-        <div class="card" style="max-width: 800px; margin: 0 auto;">
-            <h2 style="text-align: center; margin-bottom: var(--spacing-xl);">Session Management</h2>
+            <div class="session-header">
+                <h1>Active Session</h1>
+            </div>
 
-            <div class="stats-grid">
+            <div class="session-stats">
                 <div class="stat-card">
-                    <h3>Time Remaining</h3>
-                    <p class="value" id="timer">00:00</p>
+                    <div class="stat-label">Time Remaining</div>
+                    <div class="stat-value" id="timer">05:00</div>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, var(--secondary) 0%, #34d399 100%);">
-                    <h3>Attendance Count</h3>
-                    <p class="value" id="count">00</p>
+                <div class="stat-card">
+                    <div class="stat-label">Attendance Count</div>
+                    <div class="stat-value" id="count">00</div>
                 </div>
             </div>
 
-            <div style="display: flex; gap: var(--spacing-md); margin-bottom: var(--spacing-lg); flex-wrap: wrap;">
-                <button class="btn btn-secondary" id="stop_btn" style="flex: 1; min-width: 150px;">
-                    Stop Session
-                </button>
-                <button class="btn btn-danger" onclick="Cancel()" style="flex: 1; min-width: 150px;">
-                    Cancel Session
-                </button>
+            <div class="session-info">
+                <div class="session-info-item">
+                    <span class="session-info-label">Subject</span>
+                    <span class="session-info-value" id="subject">-</span>
+                </div>
+                <div class="session-info-item">
+                    <span class="session-info-label">Session Code</span>
+                    <span class="session-info-value" id="code">-</span>
+                </div>
+                <div class="session-info-item">
+                    <span class="session-info-label">Year</span>
+                    <span class="session-info-value" id="year">-</span>
+                </div>
+                <div class="session-info-item">
+                    <span class="session-info-label">Branch</span>
+                    <span class="session-info-value" id="branch">-</span>
+                </div>
+                <div class="session-info-item">
+                    <span class="session-info-label">Division</span>
+                    <span class="session-info-value" id="div">-</span>
+                </div>
             </div>
 
-            <a href="" id="download_btn" class="btn" style="width: 100%; display: block; text-align: center; pointer-events: none; opacity: 0.5;" download>
-                Download Attendance Sheet
-            </a>
+            <div class="session-actions">
+                <button class="btn btn-secondary" id="stop_btn">Stop Session</button>
+                <button class="btn btn-danger" id="cancelBtn">Cancel Session</button>
+            </div>
+
+            <div style="margin-top: var(--spacing-xl);">
+                <a href="" id="download_btn" class="btn btn-outline" style="width: 100%; display: block; text-align: center; pointer-events: none; opacity: 0.5;" download>
+                    Download Attendance Sheet
+                </a>
+            </div>
         </div>
     </main>
 

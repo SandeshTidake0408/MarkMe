@@ -93,13 +93,13 @@
                             <label style="margin-bottom: var(--spacing-sm);">Attendance Code</label>
                             <div style="font-size: 2rem; font-weight: 600; color: var(--primary); text-align: center; padding: var(--spacing-md); background: white; border-radius: var(--radius); border: 2px solid var(--border);" id="code">0000</div>
                         </div>
-                        <button type="button" class="btn btn-secondary" onclick="randomNum()" style="align-self: flex-end;">
+                        <button type="button" class="btn btn-secondary" id="generateCodeBtn" style="align-self: flex-end;">
                             Generate Code
                         </button>
                     </div>
                 </div>
 
-                <button type="button" class="btn" style="width: 100%;" onclick="createPost()">
+                <button type="button" class="btn" id="createSessionBtn" style="width: 100%;">
                     Create Session
                 </button>
             </form>

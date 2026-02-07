@@ -1,6 +1,6 @@
 import api from "../../services/api.js";
+import { getQueryParam } from "../../utils/helpers.js";
 
-const url_user = new URLSearchParams(window.location.search);
 const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
@@ -9,14 +9,16 @@ const countElement = document.getElementById("count");
 const timerElement = document.getElementById("timer");
 const downloadButton = document.getElementById("download_btn");
 const stopButton = document.getElementById("stop_btn");
-const user = url_user.get("name");
-const id = url_user.get("id");
-const subj = id ? id.split("_")[0] : "";
+const user = getQueryParam("name");
+const id = getQueryParam("id");
+const sessionCode = getQueryParam("code") || "";
 
-// Add event listener for stop button
-if (stopButton) {
-	stopButton.addEventListener("click", stop_session);
-}
+// Get session data from URL parameters - keep subject and code separate
+const sessionSubject = getQueryParam("subject") || "";
+const sessionYear = getQueryParam("year") || "";
+const sessionBranch = getQueryParam("branch") || "";
+const sessionDiv = getQueryParam("div") || "";
+
 //date and time for file name
 const currentDate = new Date();
 const formattedDate = currentDate
@@ -42,8 +44,24 @@ async function user_data() {
 	}
 }
 
-user_data();
+function loadSessionInfo() {
+	// Populate session info from URL parameters - keep subject and code separate
+	const subjectEl = document.getElementById("subject");
+	const codeEl = document.getElementById("code");
+	const yearEl = document.getElementById("year");
+	const branchEl = document.getElementById("branch");
+	const divEl = document.getElementById("div");
+	
+	if (subjectEl && sessionSubject) subjectEl.textContent = sessionSubject.toUpperCase();
+	if (codeEl && sessionCode) codeEl.textContent = sessionCode.padStart(4, '0');
+	if (yearEl && sessionYear) yearEl.textContent = sessionYear.toUpperCase();
+	if (branchEl && sessionBranch) branchEl.textContent = sessionBranch;
+	if (divEl && sessionDiv) divEl.textContent = sessionDiv.toUpperCase();
+}
 
+user_data();
+loadSessionInfo();
+ 
 async function Cancel() {
 	try {
 		const res = await api.post(`/delete/${id}`, {
@@ -62,8 +80,6 @@ async function Cancel() {
 
 //timer
 function startTimer(endTime) {
-	// var duration = 5 * 60 * 1000; // 5 minutes in milliseconds
-	// var endTime = new Date().getTime() + duration;
 	var intervalId = setInterval(function () {
 		var currentTime = new Date().getTime();
 		var remainingTime = endTime - currentTime;
@@ -77,7 +93,6 @@ function startTimer(endTime) {
 			var formattedMinutes = ("0" + minutes).slice(-2);
 			var formattedSeconds = ("0" + seconds).slice(-2);
 			timerElement.textContent = formattedMinutes + ":" + formattedSeconds;
-			// console.log(formattedMinutes + ":" + formattedSeconds);
 		}
 
 		if (remainingTime <= 0) {
@@ -87,6 +102,7 @@ function startTimer(endTime) {
 		}
 	}, 1000);
 }
+
 var server_time;
 async function get_time() {
 	try {
@@ -105,7 +121,7 @@ async function stop_session() {
 	try {
 		const res = await api.post(`/delete/${id}`, {
 			endTime: server_time,
-			subject: subj,
+			subject: sessionSubject,
 		});
 		const messageEl = document.getElementById("message");
 		messageEl.className = "message success";
@@ -133,7 +149,6 @@ function sheet_save(data) {
 
 	return filePath;
 }
-// console.log("hii ", sheet_save(data));
 
 async function sheet_download() {
 	try {
@@ -155,3 +170,31 @@ async function sheet_download() {
 		console.error("Download error:", err);
 	}
 }
+
+// Set up event listeners
+function initEventListeners() {
+	if (stopButton) {
+		stopButton.addEventListener("click", stop_session);
+	}
+	
+	const cancelBtn = document.getElementById("cancelBtn");
+	if (cancelBtn) {
+		cancelBtn.addEventListener("click", Cancel);
+	}
+	
+	const profileSignOutBtn = document.getElementById("profileSignOutBtn");
+	
+	if (profileSignOutBtn && typeof SignOut === 'function') {
+		profileSignOutBtn.addEventListener("click", SignOut);
+	}
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', initEventListeners);
+} else {
+	initEventListeners();
+}
+
+// Export functions
+export { Cancel, stop_session };

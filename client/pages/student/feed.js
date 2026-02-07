@@ -1,6 +1,6 @@
 import api from "../../services/api.js";
+import { getQueryParam } from "../../utils/helpers.js";
 
-const url_user = new URLSearchParams(window.location.search);
 const userName = document.querySelector(".user_name");
 const userMail = document.querySelector(".mail");
 const userType = document.querySelector(".user_type");
@@ -14,7 +14,7 @@ let user_mail; // for global use
 //profile access
 
 async function user_data() {
-    const email = url_user.get("name");
+    const email = getQueryParam("name");
     try {
         const res = await api.get(`/feed/${email}`);
         const userData = res.data;
