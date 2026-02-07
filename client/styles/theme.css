@@ -101,7 +101,10 @@ a:hover {
   color: var(--primary-dark);
 }
 
-/* Buttons */
+/* ============================================
+   BUTTON COMPONENTS
+   ============================================ */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -116,6 +119,8 @@ a:hover {
   background-color: var(--primary);
   color: white;
   white-space: nowrap;
+  text-decoration: none;
+  font-family: var(--font-sans);
 }
 
 .btn:hover {
@@ -165,6 +170,10 @@ a:hover {
   font-size: 1.125rem;
 }
 
+.btn-full {
+  width: 100%;
+}
+
 /* Forms */
 input, select, textarea {
   width: 100%;
@@ -200,6 +209,10 @@ label {
   margin-bottom: var(--spacing-lg);
 }
 
+/* ============================================
+   COMPONENTS - Reusable UI Components
+   ============================================ */
+
 /* Cards */
 .card {
   background-color: var(--bg-primary);
@@ -207,6 +220,49 @@ label {
   padding: var(--spacing-xl);
   box-shadow: var(--shadow);
   border: 1px solid var(--border-light);
+  transition: all 0.3s ease;
+}
+
+/* Feature Card Component */
+.feature-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+  transition: none;
+}
+
+.feature-card:hover::before {
+  left: 100%;
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-md);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1) rotate(5deg);
 }
 
 /* Navigation */
